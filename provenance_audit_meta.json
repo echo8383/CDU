@@ -1,0 +1,49 @@
+{
+  "local_sha256": "7491e31f44f84ad38b17dbff4b5243b50782868c82e7b491f5c174eefbe5889d",
+  "official_sha256": "7491e31f44f84ad38b17dbff4b5243b50782868c82e7b491f5c174eefbe5889d",
+  "byte_identical": true,
+  "local_shape": [
+    350,
+    40
+  ],
+  "official_shape": [
+    350,
+    40
+  ],
+  "columns_identical": true,
+  "repo_commit": "8b363e350ae047a8115a594d1e9da64aae09b852",
+  "detectors_compared": [
+    "Sub-IForest",
+    "IForest",
+    "Sub-LOF",
+    "LOF",
+    "POLY",
+    "MatrixProfile",
+    "KShapeAD",
+    "SAND",
+    "Series2Graph",
+    "SR",
+    "Sub-PCA",
+    "Sub-HBOS",
+    "Sub-OCSVM",
+    "Sub-MCD",
+    "Sub-KNN",
+    "KMeansAD",
+    "AutoEncoder",
+    "CNN",
+    "LSTMAD",
+    "TranAD",
+    "AnomalyTransformer",
+    "OmniAnomaly",
+    "USAD",
+    "Donut",
+    "TimesNet",
+    "FITS",
+    "OFA",
+    "Lag-Llama",
+    "Chronos",
+    "TimesFM",
+    "MOMENT (ZS)",
+    "MOMENT (FT)"
+  ]
+}

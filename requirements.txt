@@ -1,0 +1,10 @@
+# Protocol-v1 evaluator and general utilities
+numpy==1.26.4
+pandas==2.2.2
+scipy==1.13.1
+scikit-learn==1.5.1
+statsmodels
+
+# Detector sweeps require the pinned external TSB-AD checkout as well.
+# The original environment used torch==2.13.0+cu126; install a platform- and
+# CUDA-appropriate PyTorch build before executing neural detector sweeps.

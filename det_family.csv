@@ -1,0 +1,33 @@
+,family
+Sub-IForest,统计
+IForest,统计
+Sub-LOF,统计
+LOF,统计
+POLY,统计
+MatrixProfile,统计
+KShapeAD,统计
+SAND,统计
+Series2Graph,统计
+SR,统计
+Sub-PCA,统计
+Sub-HBOS,统计
+Sub-OCSVM,统计
+Sub-MCD,统计
+Sub-KNN,统计
+KMeansAD,统计
+AutoEncoder,神经网络
+CNN,神经网络
+LSTMAD,神经网络
+TranAD,神经网络
+AnomalyTransformer,神经网络
+OmniAnomaly,神经网络
+USAD,神经网络
+Donut,神经网络
+TimesNet,神经网络
+FITS,神经网络
+OFA,基础模型
+Lag-Llama,基础模型
+Chronos,基础模型
+TimesFM,基础模型
+MOMENT (ZS),基础模型
+MOMENT (FT),基础模型

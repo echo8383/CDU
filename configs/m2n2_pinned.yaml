@@ -1,0 +1,26 @@
+detector_name: M2N2
+source_repo: external official M2N2 checkout; see THREE_DETECTOR_IMPLEMENTATION_AUDIT.md
+source_commit: 616b2270b6f2eab88ee5caa37c45507d2d041d22
+tsb_ad_commit: 8b363e350ae047a8115a594d1e9da64aae09b852
+seed: 2024
+execution_type: train-then-score-plus-online-test-time-adaptation
+train_input: filename-derived-prefix
+test_input: full-series-values
+label_usage: none
+normalization: Detrend
+win_size: 12
+stride: 12
+batch_size: 64
+epochs: 100
+latent_dim: 16
+optimizer: AdamW
+learning_rate: 0.001
+test_time_learning_rate: 0.001
+gamma: 0.99
+threshold_quantile: 0.9
+valid_size: 0.2
+infer_mode: online
+score_definition: per-time reconstruction MSE after online adaptation, right-edge padded
+score_orientation: higher-is-more-anomalous
+window_selection: fixed win_size=12 (TSB-AD run_M2N2; HP dict is empty)
+device: TSB-AD get_gpu(True), auto CPU/GPU

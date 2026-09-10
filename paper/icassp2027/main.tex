@@ -1,0 +1,143 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{url}
+
+\newcommand{\CDU}{\operatorname{CDU}}
+\newcommand{\Risk}{\mathcal{R}}
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+
+\title{Beyond Standalone Accuracy: Conditional Predictive Utility for Time-Series Anomaly Detectors}
+\author{\IEEEauthorblockN{Anonymous Authors}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Benchmark accuracy does not reveal whether a time-series anomaly detector contributes label-relevant information beyond low-complexity statistical cues. We introduce conditional detection utility (CDU), a source-grouped, cross-fitted comparison of held-out log-loss with and without a detector score given a predeclared statistical basis. The population quantity equals conditional mutual information under log-loss and Bayes-optimal prediction, while the finite-sample estimator is explicitly probe-relative. We evaluate nine frozen detectors on 350 TSB-AD-U series using four matched prediction conditions, source-cluster uncertainty, and redundancy/noise controls. \todo{Insert source-grouped headline result only after protocol-v1 completion.}
+\end{abstract}
+
+\begin{IEEEkeywords}
+time-series anomaly detection, conditional predictive utility, benchmark evaluation, cross-fitting
+\end{IEEEkeywords}
+
+% Page-budget target: Introduction and contributions, approximately 0.65 page.
+\section{Introduction}
+Modern time-series anomaly detectors are commonly compared using standalone range-aware metrics. Such scores answer whether a detector agrees with benchmark labels, but not whether its output contains information beyond simple statistical representations. This distinction matters because similarity to a low-complexity score does not imply statistical redundancy, while high standalone performance does not establish a unique beyond-basis contribution.
+
+We study one deliberately narrow question: given a declared low-complexity statistical basis $B$, how much additional label-relevant predictive information is provided by detector score $S_D$? We answer it through conditional detection utility (CDU), the reduction in strictly held-out predictive log-loss obtained by adding $S_D$ to $B$. CDU is an incremental predictive attribution, not a causal or mechanistic attribution to a model architecture, pretraining procedure, or parameter count.
+
+Our contributions are:
+\begin{enumerate}
+    \item We formalize beyond-basis detector evaluation through conditional predictive utility, whose population target corresponds to conditional mutual information under log-loss.
+    \item We define a source-grouped, cross-fitted protocol with a predeclared 31-score statistical basis, four matched prediction conditions, and source-cluster uncertainty.
+    \item We re-evaluate nine representative detectors and test whether standalone utility and beyond-basis contribution remain separated under leakage-resistant evaluation. \todo{Revise tense and claim strength after the frozen run.}
+\end{enumerate}
+
+% Page-budget target: Method and protocol, approximately 1.15 pages.
+\section{Conditional Predictive Utility}
+Let $Y$ denote the point-wise anomaly label, $B$ the declared statistical representation, and $S_D$ the point-wise score from detector $D$. The population target is
+\begin{equation}
+\CDU^{*}(D\mid B)=\Risk^{*}(B)-\Risk^{*}(B,S_D).
+\end{equation}
+For log-loss and Bayes-optimal predictors, this difference equals $I(Y;S_D\mid B)$. Our operational estimator restricts prediction to a fixed probe family $\mathcal Q$:
+\begin{equation}
+\widehat{\CDU}_{\mathcal Q}
+=\widehat L_{\mathrm{CF}}(B)-\widehat L_{\mathrm{CF}}(B,S_D),
+\end{equation}
+where $\widehat L_{\mathrm{CF}}$ is cross-fitted held-out log-loss. Consequently, finite-sample CDU is a probe-relative operational estimate rather than an exact estimate of conditional mutual information.
+
+\subsection{Four matched prediction conditions}
+We estimate four held-out losses on identical timestamps:
+\begin{align}
+L_0 &: \text{outer-training anomaly prior}, &
+L_B &: B,\\
+L_D &: S_D, &
+L_{B+D} &: (B,S_D).
+\end{align}
+They define basis utility $U_B=L_0-L_B$, detector-only utility $U_D=L_0-L_D$, and $\CDU=L_B-L_{B+D}$. Reporting both $U_D$ and CDU controls for the metric mismatch that would arise from comparing only range-aware VUS with point-wise log-loss.
+
+\subsection{Leakage-resistant estimation}
+The primary outer protocol leaves out one source dataset at a time. All sibling series from the held-out source are excluded from fitting and model selection. Probe hyperparameters are selected using five-fold source-grouped cross-validation inside the outer training sources. The primary probe is L2-regularized logistic regression without class weighting; Basis and Basis+Detector use identical folds, solver, regularization grid, stopping rule, and evaluation timestamps. Their only input difference is $S_D$.
+
+Training weights assign equal total mass to each source, equal mass to each series within a source, and equal mass to timestamps within a series. Evaluation averages loss first by series and then by source. Confidence intervals use 10,000 paired bootstrap samples of source datasets. Negative finite-sample CDU estimates are retained.
+
+\begin{figure}[t]
+\centering
+\fbox{\begin{minipage}{0.96\columnwidth}
+\small
+\textbf{Left: protocol.}\quad
+$B\rightarrow q_B\rightarrow L_B$;\quad
+$(B,S_D)\rightarrow q_{B+D}\rightarrow L_{B+D}$;\quad
+$\CDU=L_B-L_{B+D}$.\\[2mm]
+\textbf{Right: result plane.}\quad
+$x=$ Raw VUS, $y=$ CDU, nine labeled detectors, and a horizontal $y=0$ reference.
+\end{minipage}}
+\caption{Planned two-panel CDU protocol and Raw-VUS/CDU visualization. The final figure is generated only from frozen protocol-v1 outputs.}
+\label{fig:pipeline}
+\end{figure}
+
+% Page-budget target: Setup and primary table, approximately 0.9 page.
+\section{Experimental Protocol}
+We use the frozen 350-series TSB-AD-U population, 23 mechanically defined source groups, and nine audited detector score caches. The declared basis comprises 31 point-wise variance, range, lagged-level, centered-context, absolute-difference, median-absolute-deviation, and spectral-entropy scores. Detector execution, historical leaderboard values, and detector-specific result tuning are excluded from this stage. Raw VUS is computed from the same frozen detector instances but is not mixed into log-loss fitting.
+
+The primary logistic probe searches $C\in\{0.01,0.1,1,10\}$ inside each outer training set. A small fixed nonlinear probe, leave-one-basis-family-out analyses, and robust normalization form prespecified sensitivity checks. Redundant basis copies, random noise, circular shifts, and a complementary synthetic score calibrate the estimator before real-detector interpretation.
+
+\begin{table*}[t]
+\centering
+\caption{Primary source-grouped results. Values are placeholders until the protocol-v1 run is complete.}
+\label{tab:main}
+\small
+\begin{tabular}{lrrrrrrr}
+\toprule
+Detector & Raw VUS & Raw rank & Detector-only utility & CDU & 95\% CI & CDU rank & Positive sources\\
+\midrule
+SubPCA & \todo{--} & -- & -- & -- & [--,--] & -- & --/23\\
+POLY & \todo{--} & -- & -- & -- & [--,--] & -- & --/23\\
+MOMENT-FT & \todo{--} & -- & -- & -- & [--,--] & -- & --/23\\
+MOMENT-ZS & \todo{--} & -- & -- & -- & [--,--] & -- & --/23\\
+M2N2 & \todo{--} & -- & -- & -- & [--,--] & -- & --/23\\
+TranAD & \todo{--} & -- & -- & -- & [--,--] & -- & --/23\\
+TimesNet & \todo{--} & -- & -- & -- & [--,--] & -- & --/23\\
+FITS & \todo{--} & -- & -- & -- & [--,--] & -- & --/23\\
+AnomalyTransformer & \todo{--} & -- & -- & -- & [--,--] & -- & --/23\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+% Page-budget target: Results, robustness, limitations, approximately 1.3 pages.
+\section{Results and Robustness}
+\subsection{Standalone versus conditional utility}
+\todo{Report all nine detectors, rank shifts, source-cluster intervals, positive-source fractions, and Raw-VUS/$U_D$/CDU correlations. Do not foreground ratios with near-zero denominators.}
+
+\subsection{Probe, basis, and control robustness}
+\todo{Report logistic/nonlinear CDU rank correlation; full-basis versus leave-family-out stability; duplicate/noise controls; and the complementary synthetic calibration. State any dependence rather than selecting a favorable protocol.}
+
+\begin{table}[t]
+\centering
+\caption{Compact robustness summary (planned).}
+\label{tab:robust}
+\small
+\begin{tabular}{lrr}
+\toprule
+Setting & Raw/CDU rank $\rho$ & CDU rank vs. primary\\
+\midrule
+Logistic + full basis & -- & 1.00\\
+Nonlinear + full basis & -- & --\\
+Logistic + leave-family-out & -- & --\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Limitations and Conclusion}
+CDU is relative to a declared basis, probe family, normalization, and source population. It does not identify causal mechanisms or prove that a particular architecture generated the additional information. Source-level uncertainty may remain wide with only 23 groups, and point-wise log-loss captures different semantics from range-aware VUS. These dependencies are made explicit by the protocol rather than hidden in a single leaderboard number.
+
+\todo{Conclude with the strongest statement allowed by the source-grouped confidence intervals and robustness checks.}
+
+% Keep references on the optional fifth page where permitted by the venue.
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+\end{document}

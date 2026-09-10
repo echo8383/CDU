@@ -1,0 +1,21 @@
+detector_name: FITS
+source_repo: external official FITS checkout; see THREE_DETECTOR_IMPLEMENTATION_AUDIT.md
+source_commit: d040bb015b6299da26d879b90dd19c80fb72c160
+tsb_ad_commit: 8b363e350ae047a8115a594d1e9da64aae09b852
+seed: 2024
+execution_type: train-then-score
+train_input: filename-derived-prefix
+test_input: full-series-values
+normalization: internal reversible instance normalization only; no external scaler
+win_size: 100
+DSR: 4
+individual: true
+cut_freq: 12
+batch_size: 128
+epochs: 50
+optimizer: Adam
+learning_rate: 0.001
+score_definition: final-window-position mean squared reconstruction error
+score_orientation: higher-is-more-anomalous
+window_selection: fixed win_size=100 (TSB-AD Optimal_Uni_algo_HP_dict)
+device: TSB-AD get_gpu(True), auto CPU/GPU

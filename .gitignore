@@ -1,0 +1,48 @@
+# Python and editor state
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+.vscode/
+.idea/
+
+# Local environment and path settings
+.env
+.env.*
+!local_paths.example.env
+venv/
+.venv/
+
+# Raw benchmark data: obtain separately according to its licence
+Datasets/
+
+# Generated detector outputs, cached basis curves, checkpoints, logs, and reports
+layer2_results/*
+!layer2_results/README.md
+protocol_v1_results/*
+!protocol_v1_results/README.md
+results/*
+!results/README.md
+stage3_results/*
+!stage3_results/README.md
+vus_eval/
+*.log
+*.out
+*.err
+*.tmp
+*.npy
+*.npz
+*.pkl
+*.zip
+
+# Large/generated event metadata; the small CSV difficulty definitions are tracked
+data/*.parquet
+
+# LaTeX build output
+paper/**/*.aux
+paper/**/*.bbl
+paper/**/*.blg
+paper/**/*.log
+paper/**/*.out
+paper/**/*.pdf
