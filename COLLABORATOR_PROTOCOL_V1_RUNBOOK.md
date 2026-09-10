@@ -7,8 +7,8 @@ running the same control on two hosts or mixing different signatures.
 
 | Owner | Work | Output ownership |
 |---|---|---|
-| Primary machine | finish `independent_noise` | `protocol_v1_results/controls/independent_noise/` |
-| Collaborator | all complementary alphas: `0, 0.25, 0.5, 1, 2` | the five `complementary_alpha_*` directories |
+| Primary machine | finish `independent_noise`, then complementary `0.25, 1.0` | noise plus `complementary_alpha_0p25/` and `complementary_alpha_1p0/` |
+| Collaborator | complementary `0, 0.5, 2.0` | `complementary_alpha_0p0/`, `complementary_alpha_0p5/`, `complementary_alpha_2p0/` |
 | Primary machine after merge | clean/resume regression and final acceptance | final verification/acceptance files |
 
 The exact duplicate control is already complete on the primary machine. The
@@ -64,7 +64,7 @@ stop; never delete or rewrite `RUN_SIGNATURE.json` to bypass it.
 ## Collaborator command
 
 ```powershell
-python -u scripts\run_protocol_v1_complementary_shard.py --alphas 0 0.25 0.5 1 2 2>&1 | Tee-Object protocol_v1_complementary.log
+python -u scripts\run_protocol_v1_complementary_shard.py --alphas 0 0.5 2 2>&1 | Tee-Object protocol_v1_complementary.log
 ```
 
 The runner checkpoints after each outer source. Running the same command after
@@ -73,13 +73,11 @@ an interruption resumes and skips completed source checkpoints.
 ## Returning results
 
 After the command prints `COLLABORATOR COMPLEMENTARY SHARD COMPLETE`, return
-these five directories, preserving their exact names:
+these three directories, preserving their exact names:
 
 ```text
 protocol_v1_results/controls/complementary_alpha_0p0/
-protocol_v1_results/controls/complementary_alpha_0p25/
 protocol_v1_results/controls/complementary_alpha_0p5/
-protocol_v1_results/controls/complementary_alpha_1p0/
 protocol_v1_results/controls/complementary_alpha_2p0/
 ```
 
@@ -89,7 +87,13 @@ contain 23 source JSON checkpoints and 350 unique per-series rows before merge.
 
 ## Final primary-machine gate
 
-Only after independent noise and all returned complementary outputs are complete:
+After local noise completes, the primary machine runs its disjoint shard:
+
+```powershell
+python -u scripts\run_protocol_v1_complementary_shard.py --alphas 0.25 1
+```
+
+Only after independent noise and all local/returned complementary outputs are complete:
 
 ```powershell
 python -u scripts\verify_protocol_v1_resume_clean.py

@@ -21,10 +21,10 @@ protocol_v1_results/controls/RUN_SIGNATURE.json
 
 ## Scope
 
-Run only the five frozen complementary controls:
+Run only this assigned subset of the frozen complementary controls:
 
 ```text
-alpha = 0, 0.25, 0.5, 1, 2
+alpha = 0, 0.5, 2
 S_alpha = Z + alpha * Y
 ```
 
@@ -67,7 +67,7 @@ this task. Their `MISSING` status is acceptable.
 ## Run command
 
 ```powershell
-python -u scripts\run_protocol_v1_complementary_shard.py --alphas 0 0.25 0.5 1 2 2>&1 | Tee-Object protocol_v1_complementary.log
+python -u scripts\run_protocol_v1_complementary_shard.py --alphas 0 0.5 2 2>&1 | Tee-Object protocol_v1_complementary.log
 ```
 
 The task is resumable at the outer-source level. If interrupted, run exactly the
@@ -75,14 +75,12 @@ same command again; completed source checkpoints will be skipped.
 
 ## Required completion checks
 
-For every directory below, require 23 `by_source/*.json` checkpoints and a
+For every assigned directory below, require 23 `by_source/*.json` checkpoints and a
 350-row unique-series aggregate CSV:
 
 ```text
 protocol_v1_results/controls/complementary_alpha_0p0/
-protocol_v1_results/controls/complementary_alpha_0p25/
 protocol_v1_results/controls/complementary_alpha_0p5/
-protocol_v1_results/controls/complementary_alpha_1p0/
 protocol_v1_results/controls/complementary_alpha_2p0/
 ```
 
@@ -92,7 +90,7 @@ Do not interpret or tune results. Report failures exactly as produced.
 
 Return:
 
-1. the five complementary result directories above;
+1. the three complementary result directories above;
 2. `protocol_v1_complementary.log`;
 3. output of `git rev-parse HEAD`;
 4. Python, NumPy, pandas, SciPy, and scikit-learn versions;
