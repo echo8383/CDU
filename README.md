@@ -60,6 +60,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_protocol_v1_cont
 The controls are source-level resumable. Read
 `protocol_v1_results/controls/CONTROL_ACCEPTANCE.md` after completion.
 
+For a two-machine complementary-control split, follow
+[COLLABORATOR_PROTOCOL_V1_RUNBOOK.md](COLLABORATOR_PROTOCOL_V1_RUNBOOK.md) and
+send the collaborator [COLLABORATOR_PROMPT.md](COLLABORATOR_PROMPT.md).
+
 ## Running a detector sweep
 
 Detector sweeps require a separately obtained pinned TSB-AD checkout at commit

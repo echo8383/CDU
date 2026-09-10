@@ -5,6 +5,8 @@ task is possible with the files currently present.
 """
 from __future__ import annotations
 
+import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -19,7 +21,18 @@ def state(name: str, passed: bool, detail: str) -> bool:
     return passed
 
 
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
 def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--verify-basis-hashes", action="store_true")
+    args = parser.parse_args()
     required_ok = True
     index = ROOT / "uni_vuspr.csv"
     required_ok &= state("benchmark index", index.is_file(), str(index))
@@ -45,6 +58,16 @@ def main() -> int:
     basis_dir = ROOT / "layer2_results" / "basis_scores"
     n_basis = len(list(basis_dir.glob("*.npz"))) if basis_dir.is_dir() else 0
     state("basis cache", n_basis == 350, f"{n_basis}/350 at {basis_dir}")
+    if args.verify_basis_hashes and n_basis == 350:
+        manifest = json.loads((ROOT / "protocol_v1_input_manifest.json").read_text(encoding="utf-8"))
+        mismatches = []
+        for ordinal, (series_id, item) in enumerate(manifest["basis_files"].items(), 1):
+            path = ROOT / item["relative_path"]
+            if not path.is_file() or sha256_file(path) != item["sha256"]:
+                mismatches.append(series_id)
+            if ordinal % 25 == 0:
+                print(f"basis hash verification {ordinal}/350", flush=True)
+        required_ok &= state("basis SHA-256", not mismatches, f"mismatches={len(mismatches)}")
 
     detectors = ["SubPCA", "POLY", "MOMENT_FT", "MOMENT_ZS", "M2N2", "TranAD", "TimesNet", "FITS", "AnomalyTransformer"]
     for detector in detectors:
