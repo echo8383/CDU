@@ -82,8 +82,9 @@ protocol_v1_results/controls/complementary_alpha_2p0/
 ```
 
 Do not return or overwrite `shared_baseline`, `RUN_SIGNATURE.json`, or any
-negative-control directory. The primary machine must verify all five directories
-contain 23 source JSON checkpoints and 350 unique per-series rows before merge.
+negative-control directory. After merging the three returned directories with
+the two locally owned alpha directories, the primary machine must verify that
+all five contain 23 source JSON checkpoints and 350 unique per-series rows.
 
 ## Final primary-machine gate
 

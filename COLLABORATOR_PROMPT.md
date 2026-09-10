@@ -97,5 +97,6 @@ Return:
 5. a short statement listing which alpha controls completed 23/23.
 
 Do not return or overwrite the primary machine's shared baseline, duplicate, or
-independent-noise results. The primary researcher will merge the five disjoint
-directories and run the final clean/resume and acceptance checks.
+independent-noise results. The primary researcher will merge your three disjoint
+directories with two locally computed alpha directories, then run the final
+clean/resume and acceptance checks.
