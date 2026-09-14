@@ -1,103 +1,103 @@
-# CDU: Conditional Detector Utility for TSAD
+# CDU: Beyond-basis evaluation for time-series anomaly detection
 
-This repository contains the reproducible code, frozen protocol, detector
-wrappers, configurations, and lightweight reference artifacts for evaluating
-whether a detector score adds held-out label-predictive information beyond a
-declared low-complexity statistical basis.
+This repository evaluates how much label-relevant predictive information a
+time-series anomaly detector score adds beyond a declared 31-dimensional
+low-complexity statistical basis.
 
-The complete handover document is [CDU_PROJECT_ARCHITECTURE_AND_PLAN.md](CDU_PROJECT_ARCHITECTURE_AND_PLAN.md). The frozen primary research contract is [protocol_v1.md](protocol_v1.md).
+The deadline-focused paper protocol is intentionally small:
 
-## Repository boundary
+- 350 cached TSB-AD-U series;
+- 23-source leave-one-source-out evaluation;
+- one globally fixed L2 logistic probe (`C=0.1`);
+- four held-out losses: null, basis, detector, and basis+detector;
+- source-macro aggregation and paired source bootstrap;
+- nine frozen detector score caches; detectors are not rerun.
 
-Tracked: source code, protocol, source grouping, 350-series index, configs,
-small difficulty tables, and audit reports.
+Read [the active protocol](docs/PROTOCOL.md) and
+[the experiment map](docs/EXPERIMENTS.md) before running anything.
 
-Not tracked: raw TSB-AD-U data, basis-score cache, detector-score cache,
-checkpoints, logs, model weights, and generated outputs. The local score/basis
-cache is about 4 GB and must be transferred outside Git according to its data
-and third-party licence terms.
-
-## Fresh clone
-
-```powershell
-git clone <REMOTE_URL> cdu_kit
-cd cdu_kit
-conda create -n cdu python=3.12 -y
-conda activate cdu
-pip install -r requirements.txt
-python scripts\validate_workspace.py
-```
-
-The validator reports exactly which external assets are absent. It does not
-modify data or run models.
-
-## Local layout expected by the evaluator
+## Repository layout
 
 ```text
 cdu_kit/
-  uni_vuspr.csv                         # tracked index
-  source_groups.json                    # tracked 23-source mapping
-  Datasets/TSB-AD-U/<350 CSV files>     # external; detector sweeps only
-  layer2_results/
-    basis_scores/<350 NPZ files>        # external; CDU feature basis
-    poly_pinned_scores/<350 NPY files>  # external; POLY cache
-    detector_scores/<Detector>/<350 NPY files>
-  protocol_v1_results/                  # generated and ignored
+docs/                    # Active protocol and compact reference material
+paper/icassp2027/        # Four-page paper source
+scripts/                 # Active command-line entry points
+wrappers/                # Detector-to-point-score adapters
+configs/                 # Pinned detector configurations
+data/                    # Small tracked analysis tables
+layer2_results/          # External caches; generated/ignored
+protocol_fast_results/   # Active main-run outputs; generated/ignored
+protocol_v1_results/     # Historical exhaustive controls; generated/ignored
+source_groups.json       # Frozen 350-series to 23-source mapping
+protocol_v1_input_manifest.json
+uni_vuspr.csv            # Frozen benchmark index
+requirements.txt
 ```
 
-The frozen detector labels are `SubPCA`, `POLY`, `MOMENT_FT`, `MOMENT_ZS`,
-`M2N2`, `TranAD`, `TimesNet`, `FITS`, and `AnomalyTransformer`.
+Legacy scripts and reports were removed from the active branch on 2026-09-14.
+They remain available at Git tag:
 
-## Running Protocol v1
-
-Protocol v1 consumes cached detector scores; it never retrains a detector.
-Its formal controls must pass before a detector pilot or main result is run.
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_protocol_v1_control_queue.ps1 -BaselinePid 0
+```text
+archive/pre-paper-cleanup-2026-09-14
 ```
 
-The controls are source-level resumable. Read
-`protocol_v1_results/controls/CONTROL_ACCEPTANCE.md` after completion.
+Local copies may also exist under ignored `_archive/`.
 
-For a two-machine complementary-control split, follow
-[COLLABORATOR_PROTOCOL_V1_RUNBOOK.md](COLLABORATOR_PROTOCOL_V1_RUNBOOK.md) and
-send the collaborator [COLLABORATOR_PROMPT.md](COLLABORATOR_PROMPT.md).
+## Install
 
-## Running a detector sweep
-
-Detector sweeps require a separately obtained pinned TSB-AD checkout at commit
-`8b363e350ae047a8115a594d1e9da64aae09b852`. Set its location explicitly:
-
-```powershell
-$env:TSB_AD_ROOT = 'D:\repos\TSB-AD'
-python scripts\run_detector_smoke.py --detector TranAD --seed 2024
-python scripts\run_detector_sweep.py --detector TranAD --seed 2024 --resume
+```bash
+python -m pip install -r requirements.txt
 ```
 
-The sweep saves one curve and updates its manifest after each series. Do not
-overwrite an audited cache in place; write a new cache/branch and record why.
+Only NumPy, pandas, SciPy and scikit-learn are required for cached-score CDU
+evaluation. Detector training dependencies are unnecessary for the main run.
 
-## Collaboration rules
+## Validate external assets
 
-- Never commit datasets, score caches, checkpoints, API tokens, or model weights.
-- Do not alter the 31 basis, source groups, folds, probe grid, rank transform,
-  aggregation, or bootstrap after inspecting Protocol v1 outcomes.
-- Preserve AnomalyTransformer collapsed curves; constant scores map to 0.5.
-- Stage-2 authority is `STAGE2_FULL_AUDIT_REPORT.md`; it is not the Protocol v1
-  paper result table.
-- Historical leaderboard VUS values must never be mixed with pinned-cache or
-  Protocol v1 results.
+```bash
+python scripts/validate_workspace.py --verify-basis-hashes
+python scripts/run_protocol_fast.py --detectors TranAD TimesNet FITS --dry-run
+```
 
-## Useful entry points
+## Run the paper experiment
 
-| Task | Command/file |
+One command computes the fixed-C shared baseline and then evaluates an assigned
+detector shard. All completed source checkpoints are skipped on restart.
+
+```bash
+python -u scripts/run_protocol_fast.py \
+  --baseline \
+  --detectors TranAD TimesNet FITS \
+  --resume \
+  --continue-on-error
+```
+
+The three-machine assignment is:
+
+| Worker | Detectors |
 |---|---|
-| Validate assets | `python scripts/validate_workspace.py` |
-| Build source mapping | `python scripts/build_source_groups.py` |
-| Audit folds | `python scripts/audit_protocol_v1_folds.py` |
-| Resume formal controls | `scripts/run_protocol_v1_control_queue.ps1` |
-| Protocol evaluator | `scripts/evaluate_cdu_protocol_v1.py` |
-| Detector smoke test | `scripts/run_detector_smoke.py` |
-| Resumable detector sweep | `scripts/run_detector_sweep.py` |
-| Project handover | `CDU_PROJECT_ARCHITECTURE_AND_PLAN.md` |
+| Primary | SubPCA, POLY, MOMENT_FT |
+| Collaborator | AnomalyTransformer, MOMENT_ZS, M2N2 |
+| AutoDL | TranAD, TimesNet, FITS |
+
+Outputs are written to `protocol_fast_results/main/<Detector>/` as
+`PER_SERIES.csv`, `PER_SOURCE.csv`, `SUMMARY.csv`, and 23 resumable source
+checkpoints.
+
+## External artifacts
+
+Git intentionally excludes raw data, basis caches, detector score caches,
+checkpoints, logs, and generated results. A main-run worker needs only:
+
+- `layer2_results/basis_scores/`;
+- its assigned `layer2_results/detector_scores/<Detector>/` directories;
+- tracked index/mapping/manifest files.
+
+POLY uses `layer2_results/poly_pinned_scores/`.
+
+## Historical evidence
+
+The exhaustive nested-CV controls and Stage-2 audits remain evidence, but are
+not recomputed for the fast main run. The compact Stage-2 reference is kept at
+[docs/reference/STAGE2_AUDIT.md](docs/reference/STAGE2_AUDIT.md).

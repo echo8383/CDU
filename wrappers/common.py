@@ -20,7 +20,7 @@ REPO = _resolve_tsb_ad_root()
 if str(REPO) not in sys.path: sys.path.insert(0,str(REPO))
 from TSB_AD import model_wrapper as mw
 from TSB_AD.HP_list import Optimal_Uni_algo_HP_dict
-from r0_official_compat import patch_model_wrapper
+from cdu.tsb_ad_compat import patch_model_wrapper
 patch_model_wrapper(mw)
 
 def seed_all(seed=2024):

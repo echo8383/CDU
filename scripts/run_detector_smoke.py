@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from scripts.run_detector_sweep import WRAPPERS, load, sha
 from vus_eval.basic_metrics import generate_curve
-from r0_official_compat import find_length_rank_official_compat
+from cdu.tsb_ad_compat import find_length_rank_official_compat
 SAMPLES = ['001_NAB_id_1_Facility_tr_1007_1st_2014.csv','141_MSL_id_2_Sensor_tr_500_1st_550.csv','179_SMD_id_2_Facility_tr_5925_1st_17580.csv']
 
 def main():

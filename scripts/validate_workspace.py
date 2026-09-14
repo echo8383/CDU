@@ -49,7 +49,7 @@ def main() -> int:
         if mapping:
             required_ok &= state("source-map coverage", set(mapping) == set(series), f"{len(mapping)}/350")
 
-    required_ok &= state("frozen protocol", (ROOT / "protocol_v1.md").is_file(), "protocol_v1.md")
+    required_ok &= state("frozen protocol", (ROOT / "docs" / "PROTOCOL.md").is_file(), "docs/PROTOCOL.md")
 
     data_dir = ROOT / "Datasets" / "TSB-AD-U"
     data_present = sum((data_dir / series_id).is_file() for series_id in series)
@@ -79,7 +79,7 @@ def main() -> int:
     valid_tsb = bool(tsb and (Path(tsb).expanduser() / "TSB_AD").is_dir())
     state("TSB_AD_ROOT", valid_tsb, tsb or "not set (needed only for detector sweeps)")
 
-    print("\nProtocol-v1 controls/main evaluation need index + source map + basis cache + relevant score cache.")
+    print("\nProtocol Fast evaluation needs index + source map + basis cache + relevant score cache.")
     print("Detector sweeps additionally need raw data + TSB_AD_ROOT + the pinned TSB-AD environment.")
     return 0 if required_ok else 1
 

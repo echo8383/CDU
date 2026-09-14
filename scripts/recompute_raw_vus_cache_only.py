@@ -11,7 +11,7 @@ ROOT=Path(__file__).resolve().parents[1]
 L2=ROOT/'layer2_results'; DATA=ROOT/'Datasets'/'TSB-AD-U'
 sys.path.insert(0,str(ROOT)); sys.path.insert(0,r'D:\CSIES\AI4Energy\others\TSB-AD')
 from vus_eval.basic_metrics import generate_curve
-from r0_official_compat import find_length_rank_official_compat
+from cdu.tsb_ad_compat import find_length_rank_official_compat
 
 REF=pd.read_csv(ROOT/'uni_vuspr.csv'); FILES=REF.file.astype(str).tolist()
 CACHE={d:(L2/'poly_pinned_scores' if d=='POLY' else L2/'detector_scores'/d) for d in ['M2N2','TranAD','TimesNet','FITS']}

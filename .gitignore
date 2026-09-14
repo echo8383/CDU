@@ -22,11 +22,17 @@ layer2_results/*
 !layer2_results/README.md
 protocol_v1_results/*
 !protocol_v1_results/README.md
+protocol_fast_results/*
+!protocol_fast_results/README.md
 results/*
 !results/README.md
 stage3_results/*
 !stage3_results/README.md
 vus_eval/
+
+# Local pre-cleanup material. Historical tracked files remain recoverable from
+# the archive/pre-paper-cleanup-2026-09-14 Git tag.
+_archive/
 *.log
 *.out
 *.err
