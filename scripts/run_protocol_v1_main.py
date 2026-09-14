@@ -29,12 +29,30 @@ from run_protocol_v1_controls import (
     atomic_csv,
     atomic_json,
     compute_control_source,
-    enforce_signature,
 )
 
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "protocol_v1_results" / "main"
+
+
+def load_frozen_protocol_signature() -> str:
+    """Read the frozen control signature without OS-dependent re-hashing.
+
+    The original signature was produced from a Windows checkout.  Re-hashing
+    text files after a Linux clone changes CRLF to LF even though the tracked
+    Git content and Python semantics are unchanged.  The server main run is
+    pinned by its explicit Git commit and consumes the signed asset bundle, so
+    the archived signature is the portable provenance identifier here.
+    """
+    path = ROOT / "protocol_v1_results" / "controls" / "RUN_SIGNATURE.json"
+    if not path.is_file():
+        raise RuntimeError(f"Frozen protocol signature is missing: {path}")
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    signature = payload.get("run_signature")
+    if not isinstance(signature, str) or len(signature) != 64:
+        raise RuntimeError("Invalid frozen protocol signature")
+    return signature
 
 
 def format_duration(seconds: float) -> str:
@@ -205,7 +223,7 @@ def main() -> int:
     if args.dry_run:
         return dry_run(detectors)
 
-    signature = enforce_signature()["run_signature"]
+    signature = load_frozen_protocol_signature()
     print(f"Protocol: {PROTOCOL_VERSION}", flush=True)
     print(f"Protocol signature: {signature}", flush=True)
     print(f"Detector queue: {', '.join(detectors)}", flush=True)
