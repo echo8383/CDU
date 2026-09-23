@@ -1,0 +1,7 @@
+experiment,variant,rho_vs_primary_spline,max_abs_CDU_change,top2_same,top4_same
+normalization,minmax,0.5166666666666667,0.0089914795014019,True,False
+normalization,zscore_cdf,0.9333333333333332,0.0074720382851848986,True,True
+strength,variance,0.9333333333333332,0.0037261634400197995,True,True
+strength,variance_range,0.9500000000000001,0.003214734146145398,True,True
+strength,local_deviation,1.0,0.00036845152713190117,True,True
+strength,dispersion_change,1.0,0.00014959310479130059,True,True

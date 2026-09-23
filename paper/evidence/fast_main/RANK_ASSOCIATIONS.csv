@@ -1,0 +1,4 @@
+metric,versus,spearman_rho,kendall_tau,n_detectors,interpretation
+Raw_VUS,CDU,0.5166666666666667,0.4444444444444444,9,descriptive; no causal claim
+Source_macro_Raw_VUS,CDU,0.5166666666666667,0.4444444444444444,9,descriptive; no causal claim
+detector_utility,CDU,0.9666666666666667,0.8888888888888888,9,descriptive; no causal claim

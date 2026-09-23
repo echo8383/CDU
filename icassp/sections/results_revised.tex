@@ -1,0 +1,15 @@
+\subsection{Standalone performance and added utility tell different stories}
+Table~\ref{tab:main} and Fig.~\ref{fig:intervals}a compare detector-only utility $U_D$ with CDU under the same spline probe, log-loss, held-out sources, and weights. MOMENT-FT and MOMENT-ZS fall from $U_D$ ranks 4 and 5 to CDU ranks 7 and 9, while TranAD rises from 6 to 4. Across linear, spline, and HGB probes, the $U_D$/CDU rank correlations are 0.967, 0.667, and 0.500. The distinction also appears alongside benchmark VUS-PR: M2N2 and TranAD move from VUS ranks 5 and 6 to CDU ranks 2 and 4.
+
+POLY and both MOMENT variants have similar VUS-PR (0.3832--0.3893), yet POLY exceeds MOMENT-FT by 0.00505 bits of spline CDU [0.00172, 0.00860] and MOMENT-ZS by 0.00593 [0.00241, 0.00961]. Both differences remain positive after a joint max-standardized bootstrap correction over three pairwise POLY/MOMENT comparisons across the three probes.
+
+\subsection{Score reconstructibility does not determine added label utility}
+Source-held-out ridge regression reconstructs MOMENT-FT and MOMENT-ZS scores strongly (source-macro $R^2=0.799$ and 0.904; Spearman 0.895 and 0.951), but M2N2 and TranAD weakly ($R^2=0.054$ and $-0.002$). Across nine detectors, reconstruction $R^2$ and spline CDU have Spearman correlation $-0.167$ (Fig.~\ref{fig:intervals}b). Statistical overlap and added label utility show little alignment in this detector set: a hard-to-reconstruct score helps only if its residual information improves label prediction.
+
+\subsection{The conditional comparison is reproducible}
+SubPCA and M2N2 remain first and second across linear, spline, and HGB; TranAD and POLY complete the same top-four set (Fig.~\ref{fig:intervals}c). Pairwise rank correlations are 0.717--0.867. Spline and HGB extract substantially more predictive signal from the statistical reference than linear logistic: their basis losses are 0.2891 and 0.2869 bits versus 0.3375. Expanding linear training from sampled to full points barely changes basis loss (0.337462 versus 0.337447), indicating that the gap is driven by probe expressivity rather than additional training points.
+
+Five training-sampling seeds give identical spline ranks. Seven reference-family removals yield rank correlations of 0.917--1.000; cumulative references with 7--29 features retain the full-reference top four ($\rho=0.933$--1.000). A Gaussian-CDF-transformed z-score interface also retains that group ($\rho=0.933$). Min--max scaling preserves detector-specific score spacing and changes the broader ranking ($\rho=0.517$), moving POLY from rank 3 to 9. This contrast motivates the common rank interface: our primary CDU comparison concerns anomaly ordering rather than detector-specific score geometry.
+
+\subsection{Controls validate the intended behavior}
+Matched duplicate and independent-noise controls remain near zero, with no negative-control interval entirely above zero. Every label-informed synthetic control is clearly positive; spline synthetic CDU is 0.09220 bits [0.06819, 0.11712]. CDU separates redundant and irrelevant scores from complementary label signal.

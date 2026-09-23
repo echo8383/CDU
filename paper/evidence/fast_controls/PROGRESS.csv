@@ -1,0 +1,4 @@
+control,completed_sources,expected_sources,status
+duplicate_Var-96,23,23,COMPLETE_VALIDATED
+independent_noise,23,23,COMPLETE_VALIDATED
+complementary_alpha_2,23,23,COMPLETE_VALIDATED

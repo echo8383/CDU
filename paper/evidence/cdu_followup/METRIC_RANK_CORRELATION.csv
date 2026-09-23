@@ -1,0 +1,4 @@
+probe,spearman_detector_utility_vs_CDU
+hgb,0.5
+linear,0.9666666666666667
+spline,0.6666666666666667

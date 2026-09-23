@@ -1,103 +1,48 @@
-# CDU: Beyond-basis evaluation for time-series anomaly detection
+# CDU: beyond-basis evaluation of time-series anomaly scores
 
-This repository evaluates how much label-relevant predictive information a
-time-series anomaly detector score adds beyond a declared 31-dimensional
-low-complexity statistical basis.
+This is the shareable code, manuscript, metadata, and **curated result evidence** for a 350-series TSB-AD-U study. It asks how much label-relevant predictive utility a frozen detector score contributes beyond a declared 31-score statistical reference. The current paper uses source-held-out evaluation and reports spline as its primary probe, with linear and HGB sensitivity analyses. Older fixed-C and Stage-2 results are retained as historical evidence, not silently mixed into the current paper.
 
-The deadline-focused paper protocol is intentionally small:
+## Start here
 
-- 350 cached TSB-AD-U series;
-- 23-source leave-one-source-out evaluation;
-- one globally fixed L2 logistic probe (`C=0.1`);
-- four held-out losses: null, basis, detector, and basis+detector;
-- source-macro aggregation and paired source bootstrap;
-- nine frozen detector score caches; detectors are not rerun.
+| Goal | Location / command |
+|---|---|
+| Read the paper | [`icassp/main.pdf`](icassp/main.pdf), source [`icassp/main.tex`](icassp/main.tex) |
+| Read the Chinese edition | [`icassp/main_zh.pdf`](icassp/main_zh.pdf) |
+| Inspect reported numbers | [`paper/evidence/README.md`](paper/evidence/README.md) |
+| Understand the experiments | [`paper/README.md`](paper/README.md), [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) |
+| Check numerical claims without score caches | `python scripts/validate_story_claims.py` |
+| Rebuild figures and table from saved evidence | `python scripts/prepare_submission_assets.py` |
 
-Read [the active protocol](docs/PROTOCOL.md) and
-[the experiment map](docs/EXPERIMENTS.md) before running anything.
-
-## Repository layout
+## Repository map
 
 ```text
-cdu_kit/
-docs/                    # Active protocol and compact reference material
-paper/icassp2027/        # Four-page paper source
-scripts/                 # Active command-line entry points
-wrappers/                # Detector-to-point-score adapters
-configs/                 # Pinned detector configurations
-data/                    # Small tracked analysis tables
-layer2_results/          # External caches; generated/ignored
-protocol_fast_results/   # Active main-run outputs; generated/ignored
-protocol_v1_results/     # Historical exhaustive controls; generated/ignored
-source_groups.json       # Frozen 350-series to 23-source mapping
-protocol_v1_input_manifest.json
-uni_vuspr.csv            # Frozen benchmark index
-requirements.txt
+icassp/             Current EN/ZH manuscript, required figure PDFs and final PDFs
+paper/evidence/      Small, frozen CSV/JSON results used by the manuscript
+paper/reports/       Detailed analyses and provenance notes
+docs/                Protocol history and experiment documentation
+scripts/             Analysis, validation and optional reproduction entry points
+cdu/ wrappers/       Evaluation compatibility code and detector adapters
+configs/             Pinned detector and probe configurations
+data/                Small tracked difficulty / reproducibility metadata
+source_groups.json   Frozen 350-series to 23-source mapping
+uni_vuspr.csv        Frozen 350-series benchmark index
+protocol_v1_input_manifest.json  Input provenance and hashes
 ```
 
-Legacy scripts and reports were removed from the active branch on 2026-09-14.
-They remain available at Git tag:
+Large local inputs and run outputs are **not in Git**: `Datasets/`, `layer2_results/`, `protocol_*_results/`, `tmp/`, and `_archive/`. They remain in place on the original machine so existing scripts and checkpoints are not broken. The `paper/evidence/` snapshots are intentionally tracked; they are the compact, reviewable results, not raw detector-score caches. No detector needs to be rerun to inspect the paper.
 
-```text
-archive/pre-paper-cleanup-2026-09-14
-```
+## Reproduce at two levels
 
-Local copies may also exist under ignored `_archive/`.
-
-## Install
+For a paper-only checkout, install the light analysis dependencies and check the frozen numbers:
 
 ```bash
 python -m pip install -r requirements.txt
+python scripts/validate_story_claims.py
+python scripts/prepare_submission_assets.py
 ```
 
-Only NumPy, pandas, SciPy and scikit-learn are required for cached-score CDU
-evaluation. Detector training dependencies are unnecessary for the main run.
+Build the English manuscript with `powershell -NoProfile -ExecutionPolicy Bypass -File icassp/build.ps1` on Windows, or run `pdflatex`/`bibtex` on `icassp/main.tex` on Linux. The repository also includes a prebuilt PDF for quick review.
 
-## Validate external assets
+Full score-level reproduction additionally requires the separately distributed 350 raw series, the 31 basis curves in `layer2_results/basis_scores/`, and the nine frozen detector-score directories in `layer2_results/detector_scores/` (POLY uses `layer2_results/poly_pinned_scores/`). Check placement with `python scripts/validate_workspace.py`. These inputs are too large and/or separately licensed for the Git repository. See [`scripts/README.md`](scripts/README.md) before running any analysis; do not infer that the historical `docs/PROTOCOL.md` fixed-C configuration is the manuscript's current primary probe.
 
-```bash
-python scripts/validate_workspace.py --verify-basis-hashes
-python scripts/run_protocol_fast.py --detectors TranAD TimesNet FITS --dry-run
-```
-
-## Run the paper experiment
-
-One command computes the fixed-C shared baseline and then evaluates an assigned
-detector shard. All completed source checkpoints are skipped on restart.
-
-```bash
-python -u scripts/run_protocol_fast.py \
-  --baseline \
-  --detectors TranAD TimesNet FITS \
-  --resume \
-  --continue-on-error
-```
-
-The three-machine assignment is:
-
-| Worker | Detectors |
-|---|---|
-| Primary | SubPCA, POLY, MOMENT_FT |
-| Collaborator | AnomalyTransformer, MOMENT_ZS, M2N2 |
-| AutoDL | TranAD, TimesNet, FITS |
-
-Outputs are written to `protocol_fast_results/main/<Detector>/` as
-`PER_SERIES.csv`, `PER_SOURCE.csv`, `SUMMARY.csv`, and 23 resumable source
-checkpoints.
-
-## External artifacts
-
-Git intentionally excludes raw data, basis caches, detector score caches,
-checkpoints, logs, and generated results. A main-run worker needs only:
-
-- `layer2_results/basis_scores/`;
-- its assigned `layer2_results/detector_scores/<Detector>/` directories;
-- tracked index/mapping/manifest files.
-
-POLY uses `layer2_results/poly_pinned_scores/`.
-
-## Historical evidence
-
-The exhaustive nested-CV controls and Stage-2 audits remain evidence, but are
-not recomputed for the fast main run. The compact Stage-2 reference is kept at
-[docs/reference/STAGE2_AUDIT.md](docs/reference/STAGE2_AUDIT.md).
+The ignored `_archive/` contains recoverable local legacy manuscript components. Nothing in the current `icassp/main.tex` or `icassp/main_zh.tex` depends on them. Git history also preserves the earlier project state.

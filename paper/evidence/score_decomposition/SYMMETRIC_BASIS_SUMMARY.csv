@@ -1,0 +1,2 @@
+interface,L_prior,L_basis,basis_utility,CI_low,CI_high,positive_sources,n_sources
+symmetric_rank,0.33695587535254123,0.33867528454020673,-0.0017194091876654653,-0.03267546988224343,0.02439782291578864,15,23

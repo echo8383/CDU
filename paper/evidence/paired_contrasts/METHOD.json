@@ -1,0 +1,27 @@
+{
+  "exploratory": true,
+  "pairs": [
+    [
+      "POLY",
+      "MOMENT_FT"
+    ],
+    [
+      "POLY",
+      "MOMENT_ZS"
+    ],
+    [
+      "MOMENT_FT",
+      "MOMENT_ZS"
+    ]
+  ],
+  "probes": [
+    "linear",
+    "spline",
+    "hgb"
+  ],
+  "seed": 2024,
+  "resamples": 20000,
+  "input_sha256": "52d294bb0ba283f22a1b80f0ab7bfd7e0e9038df18ba471e25c12f6b5804c9d0",
+  "interval": "paired source percentile; plus joint nine-contrast centered max-standardized bootstrap",
+  "limitation": "Conditional on saved OOF fits; source dependence and overlapping training are not removed."
+}

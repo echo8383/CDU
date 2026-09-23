@@ -1,0 +1,2 @@
+detector,L_null,L_basis,L_detector,L_basis_detector,basis_utility,detector_utility,CDU,CDU_CI_low,CDU_CI_high,positive_source_fraction,bootstrap_prob_source_macro_positive,n_sources,n_series,fixed_C,protocol_version,positive_sources,summary_source
+SubPCA,0.3369558753525412,0.3374473706469451,0.3193417602739579,0.3262249700737639,-0.0004914952944038,0.0176141150785833,0.011222400573181,-0.0039782055292383,0.0292140349030952,0.5217391304347826,0.9139,23,350,0.1,CDU-protocol-fast-v1,12,protocol_fast_results/main/SubPCA/SUMMARY.csv

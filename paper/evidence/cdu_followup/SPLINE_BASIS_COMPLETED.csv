@@ -1,0 +1,8 @@
+variant,rho_vs_full,max_abs_change
+basis_spline_seed0_absolute_difference,1.0,0.00030517132431120107
+basis_spline_seed0_centered_placement,0.9833333333333333,0.00015162859652720004
+basis_spline_seed0_mad,1.0,0.000556238956814099
+basis_spline_seed0_next_difference,0.9666666666666667,0.0026922006895462
+basis_spline_seed0_range,1.0,0.0005448113470825997
+basis_spline_seed0_spectral_entropy,1.0,0.00014959310479130059
+basis_spline_seed0_variance,0.9166666666666666,0.0013241020613682002

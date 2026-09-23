@@ -1,0 +1,4 @@
+control,CDU,CDU_CI_low,CDU_CI_high,positive_sources,bootstrap_prob_source_macro_positive,n_series,n_sources,expectation_check,protocol_version
+duplicate_Var-96,4.6112423814805695e-06,-1.262570195297664e-06,1.2438035377815066e-05,15,0.9202,350,23,PASS,CDU-protocol-fast-v1
+independent_noise,7.685465563081566e-06,1.3390983201079474e-06,1.566914634544493e-05,15,0.9942,350,23,NOT_MET,CDU-protocol-fast-v1
+complementary_alpha_2,0.10345103958029551,0.07456713226016219,0.13320608921665827,22,1.0,350,23,PASS,CDU-protocol-fast-v1

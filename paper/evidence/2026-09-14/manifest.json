@@ -1,0 +1,70 @@
+{
+  "as_of": "2026-09-14T20:20:16.048247+08:00",
+  "scope": "Local files only; not a fresh remote status check or a full score-cache audit",
+  "git_head": "ffc7cad2f5b9d0c4fa6f6bec9fead3cb53b21faa",
+  "versions": {
+    "python": "3.12.7",
+    "numpy": "1.26.4",
+    "pandas": "2.2.2",
+    "scipy": "1.13.1",
+    "sklearn": "1.5.1"
+  },
+  "sources": [
+    {
+      "path": "protocol_fast_results/shared_baseline/PER_SERIES.csv",
+      "sha256": "927c5ffc718e8cdd75e22b960a36a809703c944b3ed13e7b98868b928e0a9ca9"
+    },
+    {
+      "path": "protocol_fast_results/main/SubPCA/PER_SERIES.csv",
+      "sha256": "091c7ad5caa3cefc08022c82e32729b8f63ce756c010a73d2c9c5bf7a67f4fde"
+    },
+    {
+      "path": "protocol_fast_results/main/SubPCA/SUMMARY.csv",
+      "sha256": "352cc916cfa50b128c31f3020f4d51419c427601e4b0a3de4fd1cbd2c15e271f"
+    },
+    {
+      "path": "protocol_fast_results/main/SubPCA/PER_SOURCE.csv",
+      "sha256": "1827c17ac73d4d5d9948e0c26c7aa657619ae7d1b4af717fa8a2c6a9be725e48"
+    },
+    {
+      "path": "layer2_results/STAGE2_AUDITED_LEADERBOARD.csv",
+      "sha256": "c1ce39b44e2f55ffe4c9e6a1fab0ed0c9f6f122cdbab79e78c37e7eafcb0c8bb"
+    },
+    {
+      "path": "protocol_v1_results/controls/complementary_alpha_0p25/SUMMARY.csv",
+      "sha256": "aaf654a1912431b3a9bc4bd5b61e5696c72e3182904c110137b272064136efa2"
+    },
+    {
+      "path": "protocol_v1_results/controls/exact_duplicate_Var-96/SUMMARY.csv",
+      "sha256": "05a7fb9f35a50654bf03f454a05470527240f9abc9b99cdefb6a7af7cc241046"
+    },
+    {
+      "path": "protocol_v1_results/controls/independent_noise/SUMMARY.csv",
+      "sha256": "83ff9851495c402e56486ac87676e5700ac484a32a0de35e2b47d37bfa5f15ff"
+    },
+    {
+      "path": "source_groups.json",
+      "sha256": "4f4f3aa159272857e3f3ad673e80586ba4ede1cd537a70c9d67d0dc318a4e0f2"
+    },
+    {
+      "path": "protocol_v1_input_manifest.json",
+      "sha256": "1d013a24ee57c288715ddede7950109247c09001e25dccd3e0386966ad4adf68"
+    },
+    {
+      "path": "docs/PROTOCOL.md",
+      "sha256": "92f10d172ccb19ccb1b3caa2f4399b393bc9fd95a870f89ebd90eebe1410a120"
+    },
+    {
+      "path": "scripts/run_protocol_fast.py",
+      "sha256": "38fd79cb4195d9326537a1c20ba4d90e0e20e4ab70a27535f40b2e2f5318191f"
+    },
+    {
+      "path": "scripts/evaluate_cdu_protocol_v1.py",
+      "sha256": "f4e1be2b2d2ab8d9cb23bb3fe588c56957bf3044456fd30be183f89569629dcd"
+    },
+    {
+      "path": "scripts/run_protocol_v1_controls.py",
+      "sha256": "75377acc2d6bf80c954de8249a812076d46a7cf46608db160eeb3ded2b7a1955"
+    }
+  ]
+}

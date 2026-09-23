@@ -1,0 +1,40 @@
+% Chinese reading edition; English main.tex remains the submission source.
+% Compile with XeLaTeX, BibTeX, XeLaTeX, XeLaTeX.
+\documentclass[letterpaper]{article}
+\usepackage{spconf,amsmath,amssymb,graphicx,booktabs,xcolor,url}
+\usepackage{xeCJK}
+\setCJKmainfont{SimSun}[BoldFont=SimHei]
+\setCJKsansfont{Microsoft YaHei}
+\setmainfont{Times New Roman}
+\usepackage{indentfirst}
+\usepackage{balance}
+\setlength{\parindent}{2em}
+\renewcommand{\dbltopfraction}{0.95}
+\renewcommand{\textfraction}{0.02}
+\input{math_commands}
+\renewcommand{\refname}{参考文献}
+\renewcommand{\figurename}{图}
+\renewcommand{\tablename}{表}
+\renewenvironment{abstract}{\begin{center}\textbf{摘要}\end{center}}{\par}
+\renewenvironment{keywords}{\par\smallskip\noindent\textbf{关键词：}}{\par}
+\makeatletter
+\def\fnum@figure{{\bfseries 图~\thefigure}}
+\def\fnum@table{{\bfseries 表~\thetable}}
+\makeatother
+\title{超越独立表现：时间序列异常检测器在简单统计量之外增加了什么？}
+\name{王一州，何书钒，王小龙，谷方明}
+\address{吉林大学；\{wangyz2124,hesf2124,wangxl2124\}@mails.jlu.edu.cn；gufm@jlu.edu.cn\\
+中文版供讨论与审阅，英文稿为投稿版本}
+\begin{document}
+\raggedbottom
+\maketitle
+\input{sections/focused_abstract_zh}
+\begin{keywords}
+时间序列异常检测，条件效用，统计参考，来源留出评价
+\end{keywords}
+\input{sections/focused_body_zh}
+\clearpage
+\balance
+\bibliographystyle{IEEEbib}
+\bibliography{references}
+\end{document}

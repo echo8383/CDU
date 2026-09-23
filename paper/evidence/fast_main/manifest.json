@@ -1,0 +1,171 @@
+{
+  "as_of": "2026-09-15T16:01:41.091323+08:00",
+  "sources": [
+    {
+      "path": "protocol_fast_results/shared_baseline/PER_SERIES.csv",
+      "sha256": "927c5ffc718e8cdd75e22b960a36a809703c944b3ed13e7b98868b928e0a9ca9"
+    },
+    {
+      "path": "layer2_results/STAGE2_AUDITED_LEADERBOARD.csv",
+      "sha256": "c1ce39b44e2f55ffe4c9e6a1fab0ed0c9f6f122cdbab79e78c37e7eafcb0c8bb"
+    },
+    {
+      "path": "layer2_results/audit_raw_vus_per_series.csv",
+      "sha256": "00fff70c6f7a6699b7211fb973803affbc7b4d1915fd349ba2e2a939f701c8e6"
+    },
+    {
+      "path": "protocol_fast_results/main/SubPCA/PER_SERIES.csv",
+      "sha256": "091c7ad5caa3cefc08022c82e32729b8f63ce756c010a73d2c9c5bf7a67f4fde"
+    },
+    {
+      "path": "protocol_fast_results/main/SubPCA/SUMMARY.csv",
+      "sha256": "352cc916cfa50b128c31f3020f4d51419c427601e4b0a3de4fd1cbd2c15e271f"
+    },
+    {
+      "path": "protocol_fast_results/main/SubPCA/PER_SOURCE.csv",
+      "sha256": "1827c17ac73d4d5d9948e0c26c7aa657619ae7d1b4af717fa8a2c6a9be725e48"
+    },
+    {
+      "path": "layer2_results/audit_raw_vus_per_series.csv",
+      "sha256": "00fff70c6f7a6699b7211fb973803affbc7b4d1915fd349ba2e2a939f701c8e6"
+    },
+    {
+      "path": "protocol_fast_results/main/POLY/PER_SERIES.csv",
+      "sha256": "38c496020f25193288cd8033b647712631b4bc55c1999ad3d80186628f1d1dd6"
+    },
+    {
+      "path": "protocol_fast_results/main/POLY/SUMMARY.csv",
+      "sha256": "a6af7bf1268d5d93571b0568144d459fea3c8416b117e632dbd19c2b4dd5c913"
+    },
+    {
+      "path": "protocol_fast_results/main/POLY/PER_SOURCE.csv",
+      "sha256": "07baec4180297d80f5ee1aaf653912207864b28f780caf92f40421236f29a70a"
+    },
+    {
+      "path": "layer2_results/MOMENT_FT_audited_per_series_vus.csv",
+      "sha256": "6a68ce353347d7beca80a82cf8199651e4d43271a081a7a6bb11bfa081fe1d47"
+    },
+    {
+      "path": "protocol_fast_results/main/MOMENT_FT/PER_SERIES.csv",
+      "sha256": "0de757ebbc9e8956b1c2a8014c981b4450349c949f15928278608a807c3c9f9d"
+    },
+    {
+      "path": "protocol_fast_results/main/MOMENT_FT/SUMMARY.csv",
+      "sha256": "bab3173f9ec49b7f6578b57911a6d11a5e19c44d18d2a9d0694b72fe5f273c07"
+    },
+    {
+      "path": "protocol_fast_results/main/MOMENT_FT/PER_SOURCE.csv",
+      "sha256": "9afd6cc164c7ba46cf47608435e3a63e0a2bba24bd95303f837441aa2a6a02b6"
+    },
+    {
+      "path": "layer2_results/MOMENT_ZS_audited_per_series_vus.csv",
+      "sha256": "0c61a74cfbd4a1da2690b268a0fc88d69040f430075c544b06e36702b06dc4a1"
+    },
+    {
+      "path": "protocol_fast_results/main/MOMENT_ZS/PER_SERIES.csv",
+      "sha256": "d0521dc7426e1fb0b3785eca6d08537f1427430e1127ec53d9b2afe70aee1988"
+    },
+    {
+      "path": "protocol_fast_results/main/MOMENT_ZS/SUMMARY.csv",
+      "sha256": "cafd3e1a4903778be7a196e46c45ec4ade16492519232af40b0b218cbef5fd52"
+    },
+    {
+      "path": "protocol_fast_results/main/MOMENT_ZS/PER_SOURCE.csv",
+      "sha256": "2ef1c89b0ff3c5c323eb8d680ecdf67df56daa60f35056fa0e9f65a63c613ebd"
+    },
+    {
+      "path": "layer2_results/stage2_raw_vus_per_series/M2N2.csv",
+      "sha256": "c1382d24cb07ffb1f16ec03f2c4ee67e05a7a482adf434a0657629fa24fd493d"
+    },
+    {
+      "path": "protocol_fast_results/main/M2N2/PER_SERIES.csv",
+      "sha256": "a04fbf439d0d2412459a564d05a301c85c86e5895a00b68e092e171fe847d4ec"
+    },
+    {
+      "path": "protocol_fast_results/main/M2N2/SUMMARY.csv",
+      "sha256": "30436853cebdcd77619a75b5cc4f0a32218ae50a9154582cde508973b9a13131"
+    },
+    {
+      "path": "protocol_fast_results/main/M2N2/PER_SOURCE.csv",
+      "sha256": "b3bcf4c45282c381b255cb60097ed79473b5f5ea7974de87d07a7f425942a6a4"
+    },
+    {
+      "path": "layer2_results/stage2_raw_vus_per_series/TranAD.csv",
+      "sha256": "40b9e9298ebb2f770963f1951076745c4cf8c16fd98167c600c540d186196da4"
+    },
+    {
+      "path": "protocol_fast_results/main/TranAD/PER_SERIES.csv",
+      "sha256": "6be5b53b0b51e4aefb63ab48f7e4ecc8e9add2f66d000e6ab1e9eae015fcf9ca"
+    },
+    {
+      "path": "protocol_fast_results/main/TranAD/SUMMARY.csv",
+      "sha256": "a72de0fb4564cf34945a5b328aad2024cb04bac1089330d6d8da55eb2ad304da"
+    },
+    {
+      "path": "protocol_fast_results/main/TranAD/PER_SOURCE.csv",
+      "sha256": "68a7a84c9a46b3d1e1bcf118e83885a633cc3ce231a4706e6f5a3fd2efce003d"
+    },
+    {
+      "path": "layer2_results/stage2_raw_vus_per_series/TimesNet.csv",
+      "sha256": "904727237b01e3124a53b0c0678a5183459cf6552e95323a1fcd89040ee6fd29"
+    },
+    {
+      "path": "protocol_fast_results/main/TimesNet/PER_SERIES.csv",
+      "sha256": "3e1012f64ed43a1a45750a532a5d99f2816bf283423e4a8210a8665aa14d9179"
+    },
+    {
+      "path": "protocol_fast_results/main/TimesNet/SUMMARY.csv",
+      "sha256": "fee877e5d171ee746a555426444bea57ff97a0bfb26b53637407acc8dab10128"
+    },
+    {
+      "path": "protocol_fast_results/main/TimesNet/PER_SOURCE.csv",
+      "sha256": "544a5ec805e37c8df2f856365defb672880423971e1f95ee2d13fae3e24ae9a4"
+    },
+    {
+      "path": "layer2_results/stage2_raw_vus_per_series/FITS.csv",
+      "sha256": "ad37fdd3722655613cf95fd9bb4a70bb7b05651c8db985116bef34168a63a150"
+    },
+    {
+      "path": "protocol_fast_results/main/FITS/PER_SERIES.csv",
+      "sha256": "0aa355783c0735f1703df42875bbbad4b980c353be66e70cb27cb255679bd7ef"
+    },
+    {
+      "path": "protocol_fast_results/main/FITS/SUMMARY.csv",
+      "sha256": "4b62b300c1811135c2fa4c21dedec79c0d74fa6bda463155e928ad61e05fddfd"
+    },
+    {
+      "path": "protocol_fast_results/main/FITS/PER_SOURCE.csv",
+      "sha256": "8ce862b625c201a2901bbfe70d1e8a2ec598b679200b224f8763b07d9f26294d"
+    },
+    {
+      "path": "layer2_results/audit_raw_vus_per_series.csv",
+      "sha256": "00fff70c6f7a6699b7211fb973803affbc7b4d1915fd349ba2e2a939f701c8e6"
+    },
+    {
+      "path": "protocol_fast_results/main/AnomalyTransformer/PER_SERIES.csv",
+      "sha256": "0775708cd2fc76b9a78699f0e35b37b65a57c05fac8d12132d307aa8654d5698"
+    },
+    {
+      "path": "protocol_fast_results/main/AnomalyTransformer/SUMMARY.csv",
+      "sha256": "aaf443a7fa65527b850e2d9a72ddbff7f5d5bff470af7217eca91cd43d793249"
+    },
+    {
+      "path": "protocol_fast_results/main/AnomalyTransformer/PER_SOURCE.csv",
+      "sha256": "37d812991579f654ae6524b0ba38c0c827e4db5ef7b3d3468e9244d961629a84"
+    },
+    {
+      "path": "source_groups.json",
+      "sha256": "4f4f3aa159272857e3f3ad673e80586ba4ede1cd537a70c9d67d0dc318a4e0f2"
+    },
+    {
+      "path": "scripts/run_protocol_fast.py",
+      "sha256": "38fd79cb4195d9326537a1c20ba4d90e0e20e4ab70a27535f40b2e2f5318191f"
+    },
+    {
+      "path": "scripts/evaluate_cdu_protocol_v1.py",
+      "sha256": "f4e1be2b2d2ab8d9cb23bb3fe588c56957bf3044456fd30be183f89569629dcd"
+    }
+  ],
+  "scope": "existing Fast loss arithmetic, bootstrap, Raw cache identity and aggregation; no detector/probe fit",
+  "limitation": "No independent refitting of Fast losses; Fast checkpoints do not store run-time score hashes. Current Raw cache identity is verified; historical Fast input identity depends on frozen-run provenance."
+}

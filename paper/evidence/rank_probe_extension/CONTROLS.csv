@@ -1,0 +1,10 @@
+probe,detector,CDU,CI_low,CI_high,positive_sources,bootstrap_prob_macro_positive,CI_covers_zero,source
+linear,duplicate_Var96,-4.34495562497744e-06,-1.0479549226308927e-05,-1.6250864402798213e-07,7,0.018,False,D:\CSIES\TSAD\Onelier\CDU_starter_kit\cdu_kit\protocol_rank_probe_results\cap2048\linear\duplicate_Var96\PER_SERIES.csv
+linear,independent_noise,-9.945033064159106e-07,-1.1295701303916106e-05,9.227660404136779e-06,8,0.4143,True,D:\CSIES\TSAD\Onelier\CDU_starter_kit\cdu_kit\protocol_rank_probe_results\cap2048\linear\independent_noise\PER_SERIES.csv
+linear,complementary_alpha2,0.10351365975460976,0.07429522158167995,0.1338603000782175,22,1.0,False,D:\CSIES\TSAD\Onelier\CDU_starter_kit\cdu_kit\protocol_rank_probe_results\cap2048\linear\complementary_alpha2\PER_SERIES.csv
+spline,duplicate_Var96,9.207002522654423e-05,-0.00010368031123650003,0.00030119930754544163,15,0.816,True,D:\CSIES\TSAD\Onelier\CDU_starter_kit\cdu_kit\protocol_rank_probe_results\cap2048\spline\duplicate_Var96\PER_SERIES.csv
+spline,independent_noise,-6.72920796896015e-06,-4.430196717845067e-05,2.677449091955671e-05,13,0.3721,True,D:\CSIES\TSAD\Onelier\CDU_starter_kit\cdu_kit\protocol_rank_probe_results\cap2048\spline\independent_noise\PER_SERIES.csv
+spline,complementary_alpha2,0.09219614951331007,0.06819311239239263,0.1171197963285786,23,1.0,False,D:\CSIES\TSAD\Onelier\CDU_starter_kit\cdu_kit\protocol_rank_probe_results\cap2048\spline\complementary_alpha2\PER_SERIES.csv
+hgb,duplicate_Var96,-2.6976278323830004e-17,-3.3328836435825243e-17,-2.007593868076222e-17,0,0.0,False,D:\CSIES\TSAD\Onelier\CDU_starter_kit\cdu_kit\protocol_rank_probe_results\cap2048\hgb\duplicate_Var96\PER_SERIES.csv
+hgb,independent_noise,-2.6976278323830004e-17,-3.3328836435825243e-17,-2.007593868076222e-17,0,0.0,False,D:\CSIES\TSAD\Onelier\CDU_starter_kit\cdu_kit\protocol_rank_probe_results\cap2048\hgb\independent_noise\PER_SERIES.csv
+hgb,complementary_alpha2,0.08641349368674488,0.06276632215978117,0.11240450115424494,22,1.0,False,D:\CSIES\TSAD\Onelier\CDU_starter_kit\cdu_kit\protocol_rank_probe_results\cap2048\hgb\complementary_alpha2\PER_SERIES.csv

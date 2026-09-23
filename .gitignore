@@ -24,6 +24,15 @@ protocol_v1_results/*
 !protocol_v1_results/README.md
 protocol_fast_results/*
 !protocol_fast_results/README.md
+# Exploratory/robustness runs: local checkpoints and full-size outputs stay local.
+protocol_basis_bridge/
+protocol_basis_results/
+protocol_followup_results/
+protocol_probe_results/
+protocol_rank_probe_results/
+protocol_reference_robustness/
+protocol_score_decomposition/
+protocol_symmetric_results/
 results/*
 !results/README.md
 stage3_results/*
@@ -33,6 +42,7 @@ vus_eval/
 # Local pre-cleanup material. Historical tracked files remain recoverable from
 # the archive/pre-paper-cleanup-2026-09-14 Git tag.
 _archive/
+tmp/
 *.log
 *.out
 *.err
@@ -52,3 +62,18 @@ paper/**/*.blg
 paper/**/*.log
 paper/**/*.out
 paper/**/*.pdf
+
+# Active ICASSP draft build products
+icassp/*.aux
+icassp/*.bbl
+icassp/*.blg
+icassp/*.log
+icassp/*.out
+icassp/*.pdf
+!icassp/main.pdf
+!icassp/main_zh.pdf
+icassp/*.fls
+icassp/*.fdb_latexmk
+icassp/*.synctex.gz
+icassp/figures/preview_*.png
+icassp/figures/layout_check_*.png

@@ -1,0 +1,22 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Primary spline results for nine fixed detector scores. VUS-PR is series-macro; $U_D$ and CDU are in bits. Parentheses give ranks; brackets give source-bootstrap 95\% intervals.}
+\label{tab:main}
+\setlength{\tabcolsep}{7pt}
+\begin{tabular}{ccccc}
+\toprule
+Detector & VUS-PR (rank) & $U_D$ (rank) & CDU [95\% CI] & CDU rank \\
+\midrule
+SubPCA & 0.4224 (1) & 0.04060 (1) & 0.01509 [0.00256, 0.02964] & 1 \\
+POLY & 0.3893 (2) & 0.02700 (3) & 0.00604 [0.00246, 0.00969] & 3 \\
+MOMENT-FT & 0.3864 (3) & 0.01907 (4) & 0.00099 [-0.00001, 0.00208] & 7 \\
+MOMENT-ZS & 0.3832 (4) & 0.01832 (5) & 0.00011 [-0.00088, 0.00113] & 9 \\
+M2N2 & 0.2870 (5) & 0.03090 (2) & 0.01272 [0.00075, 0.02614] & 2 \\
+TranAD & 0.2754 (6) & 0.01438 (6) & 0.00484 [-0.00162, 0.01263] & 4 \\
+TimesNet & 0.2627 (7) & 0.00591 (8) & 0.00133 [-0.00015, 0.00300] & 5 \\
+FITS & 0.2464 (8) & 0.00598 (7) & 0.00109 [-0.00008, 0.00221] & 6 \\
+AnomalyTransformer & 0.1118 (9) & -0.00005 (9) & 0.00015 [-0.00129, 0.00167] & 8 \\
+\bottomrule
+\end{tabular}
+\end{table*}

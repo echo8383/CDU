@@ -1,0 +1,26 @@
+{
+  "version": "fast-probe-robustness-hgb-v1",
+  "seed": 2024,
+  "outer_split": "23-source LOSO",
+  "training_cap_per_series": 2048,
+  "test_points": "all",
+  "threads": 4,
+  "hgb": {
+    "learning_rate": 0.1,
+    "max_iter": 32,
+    "max_leaf_nodes": 7,
+    "max_depth": 3,
+    "min_samples_leaf": 100,
+    "l2_regularization": 1.0,
+    "max_bins": 31,
+    "early_stopping": false,
+    "random_state": 2024
+  },
+  "sampling_policy": "User-approved on 2026-09-16: at most 2048 points per training series, uniform without replacement using SHA256(version|series_id), independent of labels. Identical indices for HGB and matched logistic. All test points retained. Explicit cap=0 remains available as a separate full-data branch.",
+  "conditions": ["basis", "basis_plus_score"],
+  "control_order": ["duplicate", "noise", "alpha2"],
+  "detectors": ["SubPCA", "POLY", "MOMENT_FT", "MOMENT_ZS", "M2N2", "TranAD", "TimesNet", "FITS", "AnomalyTransformer"],
+  "aggregation": "timestamp mean, then within-source series mean, then equal source mean",
+  "bootstrap": "10000 paired source resamples, seed 2024",
+  "notes": "No tuning; no early-stopping timestamp split; separate outputs; never overwrites primary logistic results."
+}
