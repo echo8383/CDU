@@ -1,5 +1,28 @@
 # CDU: beyond-basis evaluation of time-series anomaly scores
 
+Code for **Beyond Standalone Performance: What Do Time-Series Anomaly Detectors Add Beyond Simple Statistics?**
+
+Repository: https://github.com/echo8383/CDU
+
+## Quick start (fresh checkout)
+
+Use Python 3.11 and run commands from the repository root. No GPU or detector training is required for the offline evaluation.
+
+```bash
+git clone https://github.com/echo8383/CDU.git
+cd CDU
+python -m venv .venv
+# Linux/macOS:
+source .venv/bin/activate
+# Windows PowerShell instead: .venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python scripts/validate_story_claims.py
+```
+
+The last command checks the tracked numerical evidence used in the paper. It does not retrain probes. For complete score-level reruns, input formats, controls, primary spline and sensitivity commands, see **[docs/REPRODUCING.md](docs/REPRODUCING.md)**.
+
+**Input availability:** this checkout includes the source map, curated results, analysis code and paper assets. Point-wise score/basis caches are not included and currently have no public download in this repository. Full evaluation therefore requires those external inputs; request the frozen cache bundle through a repository issue. The instructions below distinguish this requirement from evidence-only reproduction.
+
 This is the shareable code, manuscript, metadata, and **curated result evidence** for a 350-series TSB-AD-U study. It asks how much label-relevant predictive utility a frozen detector score contributes beyond a declared 31-score statistical reference. The current paper uses source-held-out evaluation and reports spline as its primary probe, with linear and HGB sensitivity analyses. Older fixed-C and Stage-2 results are retained as historical evidence, not silently mixed into the current paper.
 
 ## Start here

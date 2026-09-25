@@ -1,108 +1,105 @@
 \section{Introduction}
-Current TSAD benchmarks evaluate whether an anomaly score predicts anomalies, but not whether it contributes information beyond simple statistical signals already present in the time series. These are different questions. Local variance and deviation can themselves be competitive anomaly scores~\cite{zhu2026oneliners}; a modern detector may therefore score highly while largely reproducing them, whereas a lower-ranked detector may provide complementary anomaly evidence. Benchmarks such as TSB-AD~\cite{liu2024tsbad} expose standalone performance but not this added contribution.
+Modern time-series anomaly detection (TSAD) uses increasingly sophisticated detectors, yet simple scorers based on local variation and deviation remain surprisingly competitive~\cite{zhu2026oneliners}. When a complex detector performs well, does it capture anomaly-relevant structure beyond simple statistics, or largely re-express patterns already present in the time series? Benchmarks such as TSB-AD~\cite{liu2024tsbad} characterize standalone detection performance but do not directly answer what a detector adds beyond a statistical reference.
 
-This motivates two distinct questions. First, how well can a statistical reference $B$ reconstruct a detector score $S_D$? Second, given $B$, how much additional label-prediction utility does $S_D$ provide? The first measures statistical overlap; the second measures whether the detector contributes anomaly evidence beyond that overlap. Difference alone is insufficient: independent noise can differ from the reference without helping.
+Work on foundation models asks whether learned scores provide value beyond window statistics~\cite{stability2026}. Predictive $\mathcal V$-information studies what a restricted predictor can access~\cite{xu2020usable}; conditional probing tests what one representation adds beyond another~\cite{hewitt2021conditional}; and predictive variable importance compares risks with and without a feature set~\cite{williamson2023importance}. These ideas suggest examining detector scores relative to a fixed statistical reference under source-held-out transfer.
 
-We introduce conditional detection utility (CDU) as an evaluation axis missing from current TSAD benchmarks. CDU compares held-out log-loss with and without the detector score while retaining the same statistical reference. It complements volume under the precision--recall surface (VUS-PR)~\cite{paparrizos2022vus}: standalone evaluation asks whether a score predicts anomalies; conditional evaluation asks what it adds beyond a reference. POLY and MOMENT-ZS have nearly identical VUS-PR (0.389 versus 0.383), yet under our primary spline evaluation POLY provides 0.00593 bits more CDU. The distinction also persists when detector-only utility and CDU are compared under the same log-loss. MOMENT-ZS is highly reconstructible from the reference ($R^2=0.904$), demonstrating that statistical overlap and added label utility are different notions.
+A detector score $S_D$ can be viewed from three perspectives. First, \emph{standalone performance} measures how well it identifies anomalies, for example with VUS-PR~\cite{paparrizos2022vus}. Second, \emph{statistical overlap} measures how well a reference $B$ predicts $S_D$. Finally, \emph{conditional contribution} asks whether $S_D$ improves label prediction once $B$ is available. A highly predictable score can retain a useful residual; conversely, a score unlike $B$ may contain only irrelevant noise.
 
-Our contributions are threefold. First, we identify a blind spot in standard TSAD evaluation: standalone performance cannot distinguish statistical redundancy from complementary label signal. Second, we introduce CDU, a paired source-held-out measure of the predictive value added by a fixed detector score beyond a statistical reference; its unrestricted population counterpart is conditional mutual information. Third, across 350 series and nine detectors, we show that conditioning changes detector comparisons, statistical reconstructibility does not determine added label utility, and the resulting leading structure persists across probes, seeds, and reference variants.
+We measure that contribution with conditional detection utility (CDU): the reduction in held-out log-loss when a detector score is added to the same reference. In our nine-detector comparison, standalone and conditional ranks differ under the same probe and loss; score reconstructibility from the reference does not predict CDU ($\rho=-0.167$). Code and result evidence are available at \url{https://github.com/echo8383/CDU}.
 
-\section{Related Work}
-Predictive $\mathcal V$-information describes information accessible to a chosen predictor family~\cite{xu2020usable}. Conditional probing measures information beyond a baseline representation~\cite{hewitt2021conditional}, while predictive variable importance compares risks with and without features~\cite{williamson2023importance}. We instantiate this principle for heterogeneous TSAD scores through a common score interface, source-held-out fitting, matched standalone/conditional losses, and source-balanced aggregation.
-
-In TSAD, comparisons with one-line statistical scorers reveal overlap in benchmark performance~\cite{zhu2026oneliners}. Work on time-series foundation models also examines whether forecast-error features add value beyond window statistics under drift~\cite{stability2026}. Our focus is a common, score-level conditional evaluation across detector families, with matched losses and source-held-out testing.
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{figures/main_concept.pdf}
+\caption{The same series yields a statistical reference and a detector score. We distinguish standalone performance (Q1), statistical overlap (Q2), and conditional contribution (Q3); the three comparisons answer different questions.}
+\label{fig:protocol}
+\end{figure*}
 
 \section{Conditional Detection Utility}
-\subsection{Paired predictive evaluation}
+\subsection{Conditional detection utility}
 Let $Y\in\{0,1\}$ denote an anomaly label, $B\in\mathbb R^p$ a statistical reference, and $S_D$ a detector score. For each held-out source, fit two probability predictors from the same probe family $\Probe$: one receives $B$, and the other $(B,S_D)$. Both use the same training points, weights, and fitting settings. The operational estimate is
 \begin{equation}
-\widehat{\CDU}_{\Probe}(D\mid B)=\widehat L_B-\widehat L_{BD},
+\widehat{\mathrm{CDU}}_{\mathcal Q}(D\mid B)=\widehat L_B-\widehat L_{BD},
 \label{eq:cdu}
 \end{equation}
 where $\widehat L_B$ and $\widehat L_{BD}$ are their paired held-out log-losses in bits. Positive CDU means that the detector improves label prediction given the reference. Figure~\ref{fig:protocol} summarizes the comparison.
 
-For a matched standalone comparison, define $U_D=\widehat L_0-\widehat L_D$. Here the detector-only probe receives $S_D$, and the null predicts weighted anomaly prevalence estimated only from training sources. Thus $U_D$ and CDU use the same loss but different reference information.
+For a matched standalone comparison, $U_D=\widehat L_0-\widehat L_D$, where the detector-only probe receives $S_D$ and the null uses training-source anomaly prevalence. Thus $U_D$ and CDU use the same loss but different reference information.
 
-\subsection{Population interpretation}
-Define $\Risk^*(X)=\inf_q\E[-\log_2 q(Y\mid X)]$, where $q$ ranges over conditional probability distributions.
-\par\noindent\textbf{Proposition 1.} Under a common joint distribution and unrestricted predictors,
+Define $\Risk^*(X)=\inf_q\E[-\log_2 q(Y\mid X)]$, where $q$ ranges over conditional probability distributions.\par\noindent\textbf{Proposition 1.} Under a common joint distribution and unrestricted predictors,
 \begin{equation}
 \begin{aligned}
 \CDU^*(D\mid B)&=\Risk^*(B)-\Risk^*(B,S_D)\\
 &=I(Y;S_D\mid B).
 \end{aligned}
 \end{equation}
-\noindent\textit{Proof.} The cross-entropy decomposition gives
+\noindent\textit{Proof.} For any input $X$, the cross-entropy decomposition gives
 \begin{equation}
 \begin{aligned}
 \E[-\log_2 q(Y\mid X)]&=H(Y\mid X)\\
-&\quad+\E_X[D_{\rm KL}(P_{Y\mid X}\Vert q_{Y\mid X})].
+&\quad+\E_X D_{\rm KL}(P_{Y\mid X}\Vert q_{Y\mid X}).
 \end{aligned}
 \end{equation}
-The KL term is nonnegative and vanishes for $q=P$, giving $\Risk^*(X)=H(Y\mid X)$. Taking the difference proves the identity.\hfill$\square$
+The KL term is nonnegative and vanishes for the true conditional distribution, so $\Risk^*(X)=H(Y\mid X)$. Therefore,
+\begin{equation}
+\begin{aligned}
+\Risk^*(B)-\Risk^*(B,S_D)
+&=H(Y\mid B)-H(Y\mid B,S_D)\\
+&=I(Y;S_D\mid B).
+\end{aligned}
+\end{equation}
+This proves the identity.\hfill$\square$
 
-Consequently, population CDU is nonnegative and is zero whenever $S_D=g(B)$: a score determined by the reference adds no information. Finite-probe CDU is an operational, predictor-family-relative estimate of added predictive utility; fitted estimates may be negative under finite-sample transfer.
+Population CDU is nonnegative and vanishes when $Y\perp S_D\mid B$, including $S_D=g(B)$. Finite-probe CDU is predictor-family-relative and may be negative under transfer; it is not an exact estimate of conditional mutual information.
 
-\subsection{Common score representation}
+\subsection{Score interface}
 Each curve is aligned to the same time indices as its labels. We evaluate within-series anomaly ordering through average ranks, removing detector-specific score spacing. For a length-$T_i$ curve, ranks start at one:
 \begin{equation}
 \widetilde s_{it}=\frac{\operatorname{rank}_{\rm avg}(s_{it})-0.5}{T_i}.
 \end{equation}
 The statistical reference uses the same rank representation. Ties are preserved, and constant curves map to 0.5. Rank normalization is part of the evaluation definition: it measures the label information added by a detector's anomaly ordering beyond the rank-normalized statistical reference. The transform is label-free; $B$ and $S_D$ below denote these probe inputs.
 
-\subsection{Leave-one-source-out probing}
+\subsection{Source-held-out estimation}
 A source is a benchmark dataset group. Each outer fold excludes all series of one source from probe training. Labels from the remaining sources supervise the probes; held-out labels are used only to compute losses. Detector outputs and the statistical reference remain fixed. This strict split prevents probes from exploiting sibling series from the held-out source.
 
 Let $G_{\rm tr}$ be the number of training sources and $n_g$ the number of series in training source $g$. If $m_i$ points are retained from series $i$ and $N_s=\sum_i m_i$, assign each retained point weight
 \begin{equation}
 w_{it}=\frac{N_s}{G_{\rm tr}n_gm_i}.
 \end{equation}
-This gives equal total weight to sources and equal weight to series within a source. Full-data training sets $m_i=T_i$; sampled training uses $m_i=\min(T_i,2048)$. Weights sum to $N_s$. A common basis-only predictor supplies the reference loss for all detectors within each fold.
+This gives equal total weight to sources and to series within each source. Training retains $m_i=\min(T_i,2048)$ points per series; every test point is evaluated. A common basis-only predictor supplies the reference loss for all detectors within each fold. With binary log-loss $\ell$ and held-out probability $p_{it}^M$ for model $M$, aggregation is
+\begin{equation}
+\begin{aligned}
+L_i^M&=\frac{1}{T_i}\sum_{t=1}^{T_i}\ell(y_{it},p_{it}^M),\\
+\widehat L_M&=\frac{1}{G}\sum_{g=1}^{G}\frac{1}{n_g}\sum_{i\in g}L_i^M.
+\end{aligned}
+\end{equation}
+Here $G=23$; paired source-bootstrap intervals quantify variation across held-out sources.
 
-\begin{figure}[t]
+\input{tables/primary_results}
+\begin{figure*}[!t]
 \centering
-\includegraphics[width=\columnwidth]{figures/protocol.pdf}
-\caption{One series yields a statistical reference and detector score. Standalone utility uses the score alone; CDU compares paired probes with and without it.}
-\label{fig:protocol}
-\end{figure}
-
-\subsection{Aggregation and uncertainty}
-For input setting $M\in\{0,B,D,BD\}$, let $p_{it}^{M}$ be the held-out anomaly probability. With binary log-loss $\ell(y,p)=-y\log_2p-(1-y)\log_2(1-p)$, compute
-\begin{equation}
-L_i^M=\frac{1}{T_i}\sum_{t=1}^{T_i}\ell(y_{it},p_{it}^{M}).
-\end{equation}
-All test points are retained. Average first within each source and then equally over $G_{\rm all}$ sources:
-\begin{equation}
-L_g^M=\frac{1}{n_g}\sum_{i\in g}L_i^M,\qquad
-\widehat L_M=\frac{1}{G_{\rm all}}\sum_g L_g^M.
-\end{equation}
-Our study has $G_{\rm all}=23$ and $G_{\rm tr}=22$. Paired source-bootstrap 95\% intervals quantify held-out source variation conditional on the fitted outer-fold probes.
+\includegraphics[width=\textwidth]{figures/conditional_comparison.pdf}
+\caption{The benchmark blind spot and its consequences. (a) Detector-only and conditional utility use the same spline probe and log-loss yet differ; (b) statistical reconstructibility does not determine CDU; (c) the top-two order and top-four membership (shaded) persist across probes.}
+\label{fig:intervals}
+\end{figure*}
 
 \section{Experimental Setup}
 \label{sec:setup}
 \textbf{Data and detectors.} We evaluate 350 univariate series from TSB-AD-U~\cite{liu2024tsbad}, following the evaluation population in~\cite{zhu2026oneliners}. Source groups follow the dataset identifier in each filename; MSL and SMAP are distinct, and UCR is grouped as one archive. We use SubPCA and POLY benchmark implementations~\cite{liu2024tsbad}, fine-tuned (FT) and zero-shot (ZS) MOMENT~\cite{goswami2024moment}, M2N2~\cite{kim2024m2n2}, TranAD~\cite{tuli2022tranad}, TimesNet~\cite{wu2023timesnet}, FITS~\cite{xu2024fits}, and AnomalyTransformer~\cite{xu2022anomaly}. All 350 curves are retained for every detector.
 
-\textbf{Statistical reference.} The 31 fixed, label-free features span local variance, range, prediction deviation, absolute difference, robust dispersion, and spectral entropy. Variance and mean-deviation scorers are motivated by~\cite{zhu2026oneliners}; the remaining families broaden the reference without selecting features on held-out labels.
+\textbf{Statistical reference.} The 31 fixed, label-free features span local variance, range, prediction deviation, absolute difference, robust dispersion, and spectral entropy. No feature is selected using held-out labels.
 
-\textbf{Probes and comparisons.} We use additive cubic-spline logistic regression as the primary probe, with linear logistic and histogram gradient boosting (HGB) as robustness probes. All three use the same uniformly sampled, label-independent training points (at most 2048 per series), source/series weights, and full test curves. Logistic probes use fixed inverse L2 strength $C=0.1$; spline has four fixed knots on $[0,1]$, and HGB is a shallow, 32-iteration tree ensemble. No extra class reweighting or hyperparameter search is applied. VUS-PR and CDU use the same detector curves.
+\textbf{Probes and comparisons.} Additive cubic-spline logistic regression is the primary probe; linear logistic and histogram gradient boosting (HGB) test probe sensitivity. All use the same label-independent training sample (at most 2048 points per series), source/series weights, and full test curves. Logistic probes use $C=0.1$, spline has four fixed knots, and HGB runs for 32 iterations. VUS-PR and CDU use the same detector curves.
 
-\textbf{Reconstruction and robustness.} For score reconstruction, source-held-out ridge regression predicts each detector's ranked score from the ranked 31-feature reference ($\alpha=1$); training uses the same 2048-point cap and held-out curves are evaluated in full. We report source-macro $R^2$ and Spearman correlation. Robustness repeats the spline comparison over five training-sampling seeds, seven leave-one-family-out and cumulative 7--29-feature references, and alternative detector-score interfaces while keeping the ranked reference fixed. These interfaces use within-series min--max scaling or the Gaussian CDF of within-series z-scores.
+\textbf{Reconstruction and robustness.} Source-held-out ridge regression predicts ranked detector scores from $B$ ($\alpha=1$); we report source-macro $R^2$ and Spearman correlation. We repeat the spline comparison across five sampling seeds, seven reference-family removals, cumulative 7--29-feature references, and alternative detector-score interfaces (min--max or Gaussianized z-scores).
 
-\textbf{Controls.} Controls include a duplicated reference feature, independent standard-normal noise, and a rank-transformed synthetic score $Z+2Y$, with independent $Z\sim\mathcal N(0,1)$, representing redundancy, irrelevance, and added label signal, respectively. Only the synthetic control uses labels.
+\textbf{Controls.} We test a duplicated reference feature, independent Gaussian noise, and a synthetic score $Z+2Y$ with independent $Z\sim\mathcal N(0,1)$. Only the last control uses labels.
 
 \section{Results and Interpretation}
-\input{tables/primary_results}
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{figures/conditional_comparison.pdf}
-\caption{The benchmark blind spot and its consequences. (a) Detector-only and conditional utility use the same spline probe and log-loss yet differ; (b) statistical reconstructibility does not determine added label utility; (c) the conditional ordering is stable across probes. The top-two order and top-four membership (shaded) persist.}
-\label{fig:intervals}
-\end{figure*}
 \input{sections/results_revised}
 
 \section{Discussion and Conclusion}
-TSAD benchmarks measure anomaly alignment; CDU measures added utility beyond a statistical reference. Across nine detectors, matched-loss comparisons change ranks, and score reconstruction separates statistical overlap from added label utility. The leading structure persists across probes, seeds, and tested references.
+Complex TSAD detectors can perform well while overlapping strongly with simple statistical structure. Standalone performance, statistical overlap, and conditional contribution give different views of the same score; CDU quantifies the third. Across nine detectors, the conditional ranking differs from standalone evaluation and remains broadly consistent across probes, seeds, and reference variants. Reporting these views together clarifies what a detector adds beyond the fixed statistics.
 
-CDU is intentionally reference- and probe-relative and does not assign architectural causes. Reporting it alongside standalone performance separates two questions that current benchmark rankings conflate: whether a detector works, and what it adds beyond simple statistical structure.
+Such comparisons may inform detector selection: models with similar standalone performance need not be interchangeable once their conditional contributions are measured. Using reference-relative utility to guide model combination or representation learning remains future work.
 
-{\footnotesize\noindent\textbf{Acknowledgment.} OpenAI Codex assisted with drafts of Sections 1--6 and evaluation/figure code; the authors verified the final content.\par}
+{\footnotesize\noindent\textbf{Acknowledgment.} OpenAI Codex was used for language and clarity editing. The authors reviewed and verified the final manuscript.\par}

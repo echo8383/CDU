@@ -21,7 +21,9 @@ icassp/
 
 2026-09-20 根据逐句审阅意见更新：当前实际引用 sections/focused_abstract.tex、sections/focused_body.tex、sections/results_revised.tex 和 tables/primary_results.tex。中文使用同名 _zh 文件。旧 unified_results、matched_followup、focused_results、matched_utility 及编号章节已移入本机忽略的 `_archive/2026-09-23-icassp-legacy/`，不参与当前编译。英文主入口为 main.tex、PDF 为 main.pdf；中文入口为 main_zh.tex、PDF 为 main_zh.pdf。
 
-Fig. 1 为记号一致的配对 CDU 协议图。Fig. 2 依次展示相同 log-loss 下的 $U_D$/CDU、统计参考对 detector score 的来源留出重构 $R^2$/CDU、三种探针排名；对应正文的三个主发现。Table 1 聚焦 spline 主结果，展示 VUS-PR、$U_D$、CDU、三种名次与来源级置信区间。完整 linear/HGB、对照和统计检验保留在 `../paper/reports/TECHNICAL_METHODS.md` 与原证据文件中。
+Fig. 1 使用作者提供的可编辑源文件 `figures/main_concept.drawio`；完整矢量导出保存在 `figures/main_concept_full.pdf`，运行 `figures/prepare_main_concept.py` 生成保留紫色大标题和底部三组文字的论文版 `figures/main_concept.pdf`。它展示独立表现、统计重合和条件贡献三种不同问题。中文阅读版暂时共用这张英文标注主图。Fig. 2 依次展示相同 log-loss 下的 $U_D$/CDU、统计参考对 detector score 的来源留出重构 $R^2$/CDU、三种探针排名；对应正文的三个主发现。Table 1 聚焦 spline 主结果，展示 VUS-PR、$U_D$、CDU、三种名次与来源级置信区间。完整 linear/HGB、对照和统计检验保留在 `../paper/reports/TECHNICAL_METHODS.md` 与原证据文件中。
+
+2026-09-24：英文投稿稿已完成最终文字与引用整理，并按作者要求冻结，详见 [CONTENT_FREEZE.md](CONTENT_FREEZE.md)。最终轮保持两张图和 Table 1 不变，保留完整的 CDU 命题证明、分层聚合公式、主实验、对照和未来方向。`main.pdf` 为 4 页技术正文＋第 5 页仅参考文献。中文阅读版未按本轮英文版同步，不能代替英文投稿稿。
 
 当前图表生成命令为 `python scripts/prepare_submission_assets.py`：只排版已保存数字，不训练模型、不重新计算指标。旧 `prepare_paper_revision.py` 保留以追溯配对分析，不再作为当前版式的生成入口。审阅采纳记录见 `../paper/reports/REVIEW_ADOPTION_20260920.md`；此前证据索引见 `../paper/reports/MANUSCRIPT_UPDATE_20260919.md`。
 

@@ -1,11 +1,11 @@
 \section{引言}
-现有 TSAD 基准衡量异常分数能否预测异常，却不衡量它是否在时间序列已有的简单统计信号之外贡献信息。这是两个不同问题。局部方差和偏差本身就可以成为有竞争力的异常分数~\cite{zhu2026oneliners}；现代检测器可能得分很高却主要复现这些信号，而排名较低的检测器也可能提供互补异常证据。TSB-AD 等基准~\cite{liu2024tsbad} 揭示独立表现，却没有揭示新增贡献。
+现代时间序列异常检测（TSAD）采用日益复杂的模型，但基于局部变化和偏差的简单统计评分器仍具有出人意料的竞争力~\cite{zhu2026oneliners}。复杂检测器表现良好时，它究竟捕捉了简单统计量之外的异常相关结构，还是主要重现时间序列中已有的统计模式？TSB-AD 等基准~\cite{liu2024tsbad} 衡量检测器的独立表现，却不能直接回答它在统计参考之外增加了什么。
 
-这引出两个不同问题。第一，统计参考 $B$ 能在多大程度上重构检测器分数 $S_D$？第二，给定 $B$ 后，$S_D$ 还能提供多少新增标签预测效用？前者衡量统计重合，后者衡量检测器是否在这种重合之外提供异常证据。仅有差异不足以证明有用：独立噪声也能与参考不同，却不改善预测。
+我们区分关于检测器分数 $S_D$ 的三个相关问题。\emph{独立表现}问 $S_D$ 能否预测异常标签 $Y$，VUS-PR 等指标~\cite{paparrizos2022vus} 衡量这一点。\emph{统计重合}问预先定义的参考 $B$ 能在多大程度上重构 $S_D$。\emph{条件贡献}问已有 $B$ 时，$S_D$ 能否进一步改善标签预测。重合程度或差异程度都不能单独回答最后一个问题：高度可重构的分数仍可能保留有用残差，而与 $B$ 截然不同的分数也可能只包含无关噪声。
 
-我们提出条件检测效用（CDU），补上当前 TSAD 基准缺失的评价维度。CDU 在保留相同统计参考时，比较加入检测器分数前后的留出对数损失。它与精确率--召回率曲面下体积（VUS-PR）~\cite{paparrizos2022vus} 互补：独立评价问“分数能否预测异常”，条件评价问“它在参考之外增加了什么”。POLY 与 MOMENT-ZS 的 VUS-PR 几乎相同（0.389 对 0.383），但在主要 spline 评价下，POLY 的 CDU 高出 0.00593 比特。检测器独立效用与 CDU 使用相同对数损失时，这一区别依然存在。MOMENT-ZS 又可被统计参考高度重构（$R^2=0.904$），说明统计重合与新增标签效用并非同一概念。
+我们提出条件检测效用（CDU）来量化第三个问题：将固定检测器分数加入同一统计参考后，留出对数损失降低了多少。CDU 是独立评价的补充，而非替代。在相同 spline 探针、对数损失、留出来源和权重下，MOMENT-FT 与 MOMENT-ZS 的检测器独立效用分别排名第四、第五，但 CDU 排名第七、第九；TranAD 则从第六升至第四。统计重合又呈现不同图景：九个检测器的分数可重构性与 spline CDU 的排名几乎不对应（$\rho=-0.167$）。例如，统计参考可以高度重构 MOMENT-ZS 分数（$R^2=0.904$），其 CDU 却排名第九。因此，检测器是否有效、简单统计量能解释多少分数、以及检测器在其之外增加了什么，是三个经验上不同的问题。
 
-本文有三项贡献。第一，我们指出标准 TSAD 评价的盲点：独立表现无法区分统计冗余与互补标签信号。第二，我们提出 CDU，用来源留出的配对预测评价衡量固定检测器分数在统计参考之外增加的预测价值；其不受限总体对应量是条件互信息。第三，我们在 350 条序列和九个检测器上表明，条件化改变检测器比较，统计可重构性不能决定新增标签效用，而所得到的领先组结构在探针、抽样种子和参考变体下保持稳定。
+本文有三项贡献。第一，以独立表现、统计重合和条件贡献构建 TSAD 评价框架，揭示只比较独立表现的盲点。第二，提出 CDU，用来源留出的配对评价衡量新增预测价值；其不受限总体对应量是条件互信息。第三，在 350 条序列和九个检测器上表明，条件化改变检测器比较，可重构性不能决定新增标签效用，而领先的条件贡献结构在探针、种子和参考变体下保持稳定。
 
 \section{相关工作}
 预测 $\mathcal V$-信息刻画所选预测函数族能够读取的信息~\cite{xu2020usable}；条件探针衡量基线表示之外的信息~\cite{hewitt2021conditional}；预测变量重要性则比较包含与不包含特征时的风险~\cite{williamson2023importance}。我们为异构 TSAD 分数建立共同分数接口、来源留出拟合、匹配的独立/条件损失和来源均衡汇总，将这一原则具体化。
@@ -59,12 +59,12 @@ w_{it}=\frac{N_s}{G_{\rm tr}n_gm_i}.
 \end{equation}
 各来源总权重相等，来源内各序列总权重相等。全量训练取 $m_i=T_i$，抽样训练取 $m_i=\min(T_i,2048)$，权重之和为 $N_s$。每折共同的基底预测器为全部检测器提供参考损失。
 
-\begin{figure}[t]
+\begin{figure*}[t]
 \centering
-\includegraphics[width=\columnwidth]{figures/protocol_zh.pdf}
-\caption{同一序列产生统计参考与检测器分数。独立效用只使用该分数；CDU 比较加入该分数前后的配对探针。}
+\includegraphics[width=\textwidth]{figures/main_concept.pdf}
+\caption{同一序列产生统计参考与检测器分数。主图区分独立表现（Q1）、统计重合（Q2）和条件贡献（Q3）；三者回答不同问题。}
 \label{fig:protocol}
-\end{figure}
+\end{figure*}
 
 \subsection{汇总与不确定性}
 对于输入设置 $M\in\{0,B,D,BD\}$，令 $p_{it}^{M}$ 为留出异常概率。采用二元对数损失 $\ell(y,p)=-y\log_2p-(1-y)\log_2(1-p)$，计算
@@ -77,14 +77,6 @@ L_g^M=\frac{1}{n_g}\sum_{i\in g}L_i^M,\qquad
 \widehat L_M=\frac{1}{G_{\rm all}}\sum_g L_g^M.
 \end{equation}
 本研究 $G_{\rm all}=23$、$G_{\rm tr}=22$。配对来源 Bootstrap 95\% 区间刻画给定外层折拟合探针后的留出来源变异。
-
-\input{tables/primary_results_zh}
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=\textwidth]{figures/conditional_comparison_zh.pdf}
-\caption{基准盲点及其后果：（a）检测器独立效用与条件效用使用相同 spline 探针和对数损失，结果仍不同；（b）统计可重构性不能决定新增标签效用；（c）条件排序跨探针稳定。前两名次序及阴影所示前四名集合保持不变。}
-\label{fig:intervals}
-\end{figure*}
 
 \section{实验设置}
 \label{sec:setup}
@@ -99,7 +91,14 @@ L_g^M=\frac{1}{n_g}\sum_{i\in g}L_i^M,\qquad
 \textbf{对照。} 对照包括复制参考特征、独立标准正态噪声，以及对 $Z+2Y$（独立 $Z\sim\mathcal N(0,1)$）做秩变换的合成分数，分别代表冗余、无关和新增标签信号。仅合成对照使用标签。
 
 \section{结果与解释}
+\input{tables/primary_results_zh}
 \input{sections/results_revised_zh}
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{figures/conditional_comparison_zh.pdf}
+\caption{基准盲点及其后果：（a）检测器独立效用与条件效用使用相同 spline 探针和对数损失，结果仍不同；（b）统计可重构性不能决定新增标签效用；（c）条件排序跨探针稳定。前两名次序及阴影所示前四名集合保持不变。}
+\label{fig:intervals}
+\end{figure*}
 
 \section{讨论与结论}
 TSAD 基准衡量异常对应关系；CDU 衡量统计参考之外的新增效用。九模型的匹配损失比较改变排名，分数重构则区分统计重合与新增标签效用。领先组在探针、种子及所测试的参考下保持稳定。
